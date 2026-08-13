@@ -1,10 +1,9 @@
-import express from "express";
+import "dotenv/config";
+import app from "./app.js";
+import logger from "./config/logger.js";
 
-const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT ?? 4000;
 
-app.get("/api/health", (_req, res) => {
-  res.json({ success: true, data: { status: "ok" } });
+app.listen(PORT, () => {
+  logger.info(`Server listening on port ${PORT}`);
 });
-
-app.listen(PORT);
