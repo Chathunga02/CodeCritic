@@ -1,0 +1,99 @@
+{
+  "info": {
+    "name": "CodeCritic API",
+    "_postman_id": "codecritic-api-collection-v1",
+    "description": "CodeCritic API collection. All authenticated requests use the collection-level {{bearerToken}} variable (D-27).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [{ "key": "token", "value": "{{bearerToken}}", "type": "string" }]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://codecritic-api-e5n6.onrender.com", "description": "Override with http://localhost:4000 for local dev." },
+    { "key": "bearerToken", "value": "", "description": "Clerk test-mode session token." }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "GET /api/health",
+          "request": { "auth": { "type": "noauth" }, "method": "GET", "url": { "raw": "{{baseUrl}}/api/health", "host": ["{{baseUrl}}"], "path": ["api", "health"] } },
+          "response": [{ "name": "200 OK", "status": "OK", "code": 200, "body": "{\"success\":true,\"data\":{\"status\":\"ok\"}}" }]
+        }
+      ]
+    },
+    {
+      "name": "Technologies",
+      "item": [
+        {
+          "name": "GET /api/technologies",
+          "request": { "auth": { "type": "noauth" }, "method": "GET", "url": { "raw": "{{baseUrl}}/api/technologies", "host": ["{{baseUrl}}"], "path": ["api", "technologies"] } },
+          "response": [{ "name": "200 OK", "status": "OK", "code": 200, "body": "{\"success\":true,\"data\":[{\"id\":1,\"name\":\"javascript\"},{\"id\":2,\"name\":\"typescript\"}]}" }]
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "GET /api/users/me",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/users/me", "host": ["{{baseUrl}}"], "path": ["api", "users", "me"] } },
+          "response": [{ "name": "200 OK", "status": "OK", "code": 200, "body": "{\"success\":true,\"data\":{\"id\":1,\"username\":\"alice\",\"bio\":null,\"githubUrl\":null,\"karma\":0,\"createdAt\":\"2026-08-14T00:00:00.000Z\",\"technologies\":[]}}" },
+            { "name": "401 Unauthorized", "status": "Unauthorized", "code": 401, "body": "{\"success\":false,\"error\":{\"code\":\"UNAUTHORIZED\",\"message\":\"Authentication required\"}}" }]
+        },
+        {
+          "name": "PATCH /api/users/me",
+          "request": {
+            "method": "PATCH",
+            "url": { "raw": "{{baseUrl}}/api/users/me", "host": ["{{baseUrl}}"], "path": ["api", "users", "me"] },
+            "body": { "mode": "raw", "options": { "raw": { "language": "json" } }, "raw": "{\n  \"bio\": \"Full-stack developer\",\n  \"githubUrl\": \"https://github.com/alice\",\n  \"technologyIds\": [1, 2]\n}" }
+          },
+          "response": [
+            { "name": "200 OK", "status": "OK", "code": 200, "body": "{\"success\":true,\"data\":{\"id\":1,\"username\":\"alice\",\"bio\":\"Full-stack developer\",\"githubUrl\":\"https://github.com/alice\",\"karma\":0,\"createdAt\":\"2026-08-14T00:00:00.000Z\",\"technologies\":[{\"id\":1,\"name\":\"javascript\"}]}}" },
+            { "name": "400 Unknown key", "status": "Bad Request", "code": 400, "body": "{\"success\":false,\"error\":{\"code\":\"VALIDATION_ERROR\",\"message\":\"Unrecognized key(s) in object: 'clerkId'\"}}" }
+          ]
+        },
+        {
+          "name": "GET /api/users/:username",
+          "request": { "auth": { "type": "noauth" }, "method": "GET", "url": { "raw": "{{baseUrl}}/api/users/alice", "host": ["{{baseUrl}}"], "path": ["api", "users", "alice"] } },
+          "response": [
+            { "name": "200 OK", "status": "OK", "code": 200, "body": "{\"success\":true,\"data\":{\"id\":1,\"username\":\"alice\",\"bio\":null,\"githubUrl\":null,\"karma\":0,\"createdAt\":\"2026-08-14T00:00:00.000Z\",\"technologies\":[]}}" },
+            { "name": "404 Not Found", "status": "Not Found", "code": 404, "body": "{\"success\":false,\"error\":{\"code\":\"NOT_FOUND\",\"message\":\"User not found\"}}" }
+          ]
+        },
+        {
+          "name": "GET /api/users/me/submissions",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/users/me/submissions?page=1&limit=20", "host": ["{{baseUrl}}"], "path": ["api", "users", "me", "submissions"], "query": [{ "key": "page", "value": "1" }, { "key": "limit", "value": "20" }] } },
+          "response": [{ "name": "200 OK", "status": "OK", "code": 200, "body": "{\"success\":true,\"data\":[],\"meta\":{\"page\":1,\"limit\":20,\"total\":0,\"totalPages\":0}}" }]
+        },
+        {
+          "name": "GET /api/users/me/reviews",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/users/me/reviews?page=1&limit=20", "host": ["{{baseUrl}}"], "path": ["api", "users", "me", "reviews"], "query": [{ "key": "page", "value": "1" }, { "key": "limit", "value": "20" }] } },
+          "response": [{ "name": "200 OK", "status": "OK", "code": 200, "body": "{\"success\":true,\"data\":[],\"meta\":{\"page\":1,\"limit\":20,\"total\":0,\"totalPages\":0}}" }]
+        },
+        {
+          "name": "GET /api/users/me/reviews-received",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/users/me/reviews-received?page=1&limit=20", "host": ["{{baseUrl}}"], "path": ["api", "users", "me", "reviews-received"], "query": [{ "key": "page", "value": "1" }, { "key": "limit", "value": "20" }] } },
+          "response": [{ "name": "200 OK", "status": "OK", "code": 200, "body": "{\"success\":true,\"data\":[],\"meta\":{\"page\":1,\"limit\":20,\"total\":0,\"totalPages\":0}}" }]
+        }
+      ]
+    },
+    {
+      "name": "Submissions",
+      "description": "Submission routes. Populated by Member B (B-02, B-03).",
+      "item": []
+    },
+    {
+      "name": "Reviews",
+      "description": "Review routes. Populated by Member B (B-05, B-06).",
+      "item": []
+    },
+    {
+      "name": "Feed",
+      "description": "Feed routes. Populated by Member C (C-05, C-06).",
+      "item": []
+    }
+  ]
+}
