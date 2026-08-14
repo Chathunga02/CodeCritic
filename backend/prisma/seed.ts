@@ -211,6 +211,15 @@ const SUBMISSIONS: SubmissionSeed[] = [
     criteria: ["Code Quality", "Documentation", "Performance"],
     ageHours: 0,
   },
+  {
+    authorIndex: 0,
+    title: "Antigravity Levitation Dashboard",
+    description: "A full-stack application to monitor and calibrate antigravity propulsion metrics. Features a responsive UI and containerized backend physics engine.",
+    githubUrl: "https://github.com/seed/antigravity-levitation-dashboard",
+    tags: ["python", "react", "docker"],
+    criteria: ["Code Quality", "Documentation", "Performance"],
+    ageHours: 24,
+  },
 ];
 
 type ReviewSeed = {
