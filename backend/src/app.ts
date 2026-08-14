@@ -5,6 +5,7 @@ import { morganMiddleware } from "./middlewares/morgan.middleware.js";
 import { globalLimiter } from "./middlewares/rateLimiter.middleware.js";
 import { errorHandler } from "./middlewares/errorHandler.middleware.js";
 import { catchAsync } from "./utils/catchAsync.js";
+import technologiesRouter from "./routes/technologies.router.js";
 
 const app = express();
 
@@ -18,6 +19,8 @@ app.use("/api", globalLimiter);
 app.use(cors({ origin: allowedOrigins }));
 app.use(express.json());
 app.use(clerkMiddleware());
+
+app.use("/api/technologies", technologiesRouter);
 
 app.get(
   "/api/health",

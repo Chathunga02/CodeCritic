@@ -1,0 +1,102 @@
+{
+  "info": {
+    "name": "CodeCritic API",
+    "_postman_id": "codecritic-api-collection-v1",
+    "description": "CodeCritic API collection. All authenticated requests use the collection-level {{bearerToken}} variable (D-27). Set it to a Clerk test-mode session token before running.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://codecritic-api-e5n6.onrender.com",
+      "description": "API base URL. Override with http://localhost:4000 for local dev."
+    },
+    {
+      "key": "bearerToken",
+      "value": "",
+      "description": "Clerk test-mode session token. Set this before running authenticated requests."
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "GET /api/health",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "health"]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "body": "{\"success\":true,\"data\":{\"status\":\"ok\"}}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Technologies",
+      "item": [
+        {
+          "name": "GET /api/technologies",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/technologies",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "technologies"]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "status": "OK",
+              "code": 200,
+              "body": "{\"success\":true,\"data\":[{\"id\":1,\"name\":\"javascript\"},{\"id\":2,\"name\":\"python\"},{\"id\":3,\"name\":\"typescript\"}]}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "description": "User profile routes. Populated in A-03 and A-04.",
+      "item": []
+    },
+    {
+      "name": "Submissions",
+      "description": "Submission routes. Populated by Member B (B-02, B-03).",
+      "item": []
+    },
+    {
+      "name": "Reviews",
+      "description": "Review routes. Populated by Member B (B-05, B-06).",
+      "item": []
+    },
+    {
+      "name": "Feed",
+      "description": "Feed routes. Populated by Member C (C-05, C-06).",
+      "item": []
+    }
+  ]
+}
