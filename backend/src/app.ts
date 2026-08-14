@@ -6,6 +6,7 @@ import { globalLimiter } from "./middlewares/rateLimiter.middleware.js";
 import { errorHandler } from "./middlewares/errorHandler.middleware.js";
 import { catchAsync } from "./utils/catchAsync.js";
 import technologiesRouter from "./routes/technologies.router.js";
+import usersRouter from "./routes/users.router.js";
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use(clerkMiddleware());
 
 app.use("/api/technologies", technologiesRouter);
+app.use("/api/users", usersRouter);
 
 app.get(
   "/api/health",
