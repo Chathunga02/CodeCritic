@@ -19,6 +19,11 @@ const publicUserSelect = {
   technologies: { select: { id: true, name: true } },
 } as const;
 
+const paginationQuerySchema = z.object({
+  page: z.coerce.number().int().min(1).default(1),
+  limit: z.coerce.number().int().min(1).max(50).default(20),
+});
+
 router.get(
   "/me",
   requireAuth,
@@ -42,15 +47,12 @@ router.patch(
       bio?: string | null;
       githubUrl?: string | null;
     };
-
     const user = await prisma.user.update({
       where: { id: req.user!.id },
       data: {
         ...scalarFields,
         ...(technologyIds !== undefined && {
-          technologies: {
-            set: technologyIds.map((id) => ({ id })),
-          },
+          technologies: { set: technologyIds.map((id) => ({ id })) },
         }),
       },
       select: publicUserSelect,
@@ -60,16 +62,107 @@ router.patch(
 );
 
 router.get(
+  "/me/submissions",
+  requireAuth,
+  validate(z.object({ query: paginationQuerySchema })),
+  catchAsync(async (req, res) => {
+    const { page, limit } = req.query as unknown as { page: number; limit: number };
+    const skip = (page - 1) * limit;
+    const [submissions, total] = await Promise.all([
+      prisma.submission.findMany({
+        where: { authorId: req.user!.id },
+        select: {
+          id: true,
+          title: true,
+          githubUrl: true,
+          createdAt: true,
+          technologies: { select: { id: true, name: true } },
+          _count: { select: { reviews: true } },
+        },
+        orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+        skip,
+        take: limit,
+      }),
+      prisma.submission.count({ where: { authorId: req.user!.id } }),
+    ]);
+    res.json({
+      success: true,
+      data: submissions,
+      meta: { page, limit, total, totalPages: Math.ceil(total / limit) },
+    });
+  }),
+);
+
+router.get(
+  "/me/reviews",
+  requireAuth,
+  validate(z.object({ query: paginationQuerySchema })),
+  catchAsync(async (req, res) => {
+    const { page, limit } = req.query as unknown as { page: number; limit: number };
+    const skip = (page - 1) * limit;
+    const [reviews, total] = await Promise.all([
+      prisma.review.findMany({
+        where: { reviewerId: req.user!.id },
+        select: {
+          id: true,
+          feedback: true,
+          createdAt: true,
+          submission: { select: { id: true, title: true } },
+        },
+        orderBy: { createdAt: "desc" },
+        skip,
+        take: limit,
+      }),
+      prisma.review.count({ where: { reviewerId: req.user!.id } }),
+    ]);
+    res.json({
+      success: true,
+      data: reviews,
+      meta: { page, limit, total, totalPages: Math.ceil(total / limit) },
+    });
+  }),
+);
+
+router.get(
+  "/me/reviews-received",
+  requireAuth,
+  validate(z.object({ query: paginationQuerySchema })),
+  catchAsync(async (req, res) => {
+    const { page, limit } = req.query as unknown as { page: number; limit: number };
+    const skip = (page - 1) * limit;
+    const [reviews, total] = await Promise.all([
+      prisma.review.findMany({
+        where: { submission: { authorId: req.user!.id } },
+        select: {
+          id: true,
+          feedback: true,
+          createdAt: true,
+          reviewer: { select: { id: true, username: true } },
+          submission: { select: { id: true, title: true } },
+        },
+        orderBy: { createdAt: "desc" },
+        skip,
+        take: limit,
+      }),
+      prisma.review.count({ where: { submission: { authorId: req.user!.id } } }),
+    ]);
+    res.json({
+      success: true,
+      data: reviews,
+      meta: { page, limit, total, totalPages: Math.ceil(total / limit) },
+    });
+  }),
+);
+
+// Must be LAST — catches /:username, don't move above /me/* routes
+router.get(
   "/:username",
   catchAsync(async (req, res) => {
     const user = await prisma.user.findUnique({
       where: { username: String(req.params.username) },
       select: publicUserSelect,
     });
-
-    if (!user) {
-      throw new NotFoundError("User not found");
-    }
+    if (!user) throw new NotFoundError("User not found");
     res.json({ success: true, data: user });
   }),
 );
