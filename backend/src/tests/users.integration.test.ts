@@ -5,24 +5,28 @@ import type { Test } from "supertest";
 import app from "../app.js";
 import { testPrisma, cleanTestUsers } from "./helpers/db.js";
 import { createTestClerkUser, deleteTestClerkUser, type TestClerkUser } from "./helpers/clerk.js";
+
 let userA: TestClerkUser;
 let userB: TestClerkUser;
 const clerkIdsToClean: string[] = [];
+
 function withAuth(req: Test, user: TestClerkUser): Test {
-  const uat = Math.floor(Date.now() / 1000);
-  return req.set("Cookie", `__session=${user.sessionJwt}; __clerk_db_jwt=${user.devBrowserJwt}; __client_uat=${uat}`);
+  return req.set("X-Test-Clerk-User-Id", user.clerkId);
 }
+
 beforeAll(async () => {
   userA = await createTestClerkUser("user-a");
   userB = await createTestClerkUser("user-b");
   clerkIdsToClean.push(userA.clerkId, userB.clerkId);
 });
+
 afterAll(async () => {
   await cleanTestUsers(clerkIdsToClean);
   await deleteTestClerkUser(userA.clerkId).catch(() => {});
   await deleteTestClerkUser(userB.clerkId).catch(() => {});
   await testPrisma.$disconnect();
 });
+
 describe("GET /api/health", () => {
   it("returns the success envelope", async () => {
     const res = await request(app).get("/api/health");
@@ -30,6 +34,7 @@ describe("GET /api/health", () => {
     expect(res.body).toEqual({ success: true, data: { status: "ok" } });
   });
 });
+
 describe("GET /api/technologies", () => {
   it("returns a list without auth", async () => {
     const res = await request(app).get("/api/technologies");
@@ -37,9 +42,11 @@ describe("GET /api/technologies", () => {
     expect(Array.isArray(res.body.data)).toBe(true);
   });
   it("response never contains clerkId", async () => {
-    expect(JSON.stringify((await request(app).get("/api/technologies")).body)).not.toContain("clerkId");
+    const res = await request(app).get("/api/technologies");
+    expect(JSON.stringify(res.body)).not.toContain("clerkId");
   });
 });
+
 describe("GET /api/users/me", () => {
   it("returns 401 without a token", async () => {
     const res = await request(app).get("/api/users/me");
@@ -67,6 +74,7 @@ describe("GET /api/users/me", () => {
     expect(res.body.data).not.toHaveProperty("clerkId");
   });
 });
+
 describe("PATCH /api/users/me", () => {
   it("updates bio and githubUrl successfully", async () => {
     await withAuth(request(app).get("/api/users/me"), userA);
@@ -95,6 +103,7 @@ describe("PATCH /api/users/me", () => {
     expect(JSON.stringify(res.body)).not.toContain("clerkId");
   });
 });
+
 describe("GET /api/users/:username", () => {
   it("returns public profile without auth", async () => {
     const meRes = await withAuth(request(app).get("/api/users/me"), userA);
@@ -110,14 +119,19 @@ describe("GET /api/users/:username", () => {
     expect(res.body.error.code).toBe("NOT_FOUND");
   });
 });
+
 describe("username collision suffixing", () => {
   it("two users have distinct usernames", async () => {
     await withAuth(request(app).get("/api/users/me"), userB);
-    const users = await testPrisma.user.findMany({ where: { clerkId: { in: [userA.clerkId, userB.clerkId] } }, select: { username: true } });
+    const users = await testPrisma.user.findMany({
+      where: { clerkId: { in: [userA.clerkId, userB.clerkId] } },
+      select: { username: true },
+    });
     expect(users.length).toBe(2);
     expect(new Set(users.map((u) => u.username)).size).toBe(2);
   });
 });
+
 describe("GET /api/users/me/submissions", () => {
   it("returns empty paginated list", async () => {
     const res = await withAuth(request(app).get("/api/users/me/submissions"), userA);
@@ -127,6 +141,7 @@ describe("GET /api/users/me/submissions", () => {
     expect(JSON.stringify(res.body)).not.toContain("clerkId");
   });
 });
+
 describe("GET /api/users/me/reviews", () => {
   it("returns empty paginated list", async () => {
     const res = await withAuth(request(app).get("/api/users/me/reviews"), userA);
@@ -134,6 +149,7 @@ describe("GET /api/users/me/reviews", () => {
     expect(res.body.meta.total).toBe(0);
   });
 });
+
 describe("GET /api/users/me/reviews-received", () => {
   it("returns empty paginated list", async () => {
     const res = await withAuth(request(app).get("/api/users/me/reviews-received"), userA);
