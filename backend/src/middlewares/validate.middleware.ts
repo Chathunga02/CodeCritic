@@ -16,7 +16,15 @@ export const validate = (schema: ZodType) => (req: Request, _res: Response, next
 
   const parsed = result.data as { body?: unknown; query?: unknown; params?: unknown };
   req.body = parsed.body;
-  req.query = parsed.query as Request["query"];
+  // Express 5 made req.query a read-only getter derived from req.url, so a
+  // plain assignment throws. Overriding the property descriptor is the
+  // documented workaround for substituting the parsed/validated query.
+  Object.defineProperty(req, "query", {
+    value: parsed.query,
+    writable: true,
+    enumerable: true,
+    configurable: true,
+  });
   req.params = parsed.params as Request["params"];
 
   next();

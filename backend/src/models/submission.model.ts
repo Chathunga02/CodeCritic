@@ -16,38 +16,34 @@ const submissionEditableFields = {
 };
 
 // POST /api/submissions - criteria only ever exist on creation
-export const createSubmissionSchema = z
-  .object({
-    body: z
-      .object({
-        ...submissionEditableFields,
-        criteria: z.array(criterionInput).min(1, "At least 1 criterion is required").max(5, "At most 5 criteria"),
-      })
-      .strict(),
-  })
-  .strict();
+// No top-level .strict(): validate.middleware always passes body/query/params
+// together, and this route only cares about body.
+export const createSubmissionSchema = z.object({
+  body: z
+    .object({
+      ...submissionEditableFields,
+      criteria: z.array(criterionInput).min(1, "At least 1 criterion is required").max(5, "At most 5 criteria"),
+    })
+    .strict(),
+});
 
 // PUT /api/submissions/:id - no criteria key at all, not even optional
-export const updateSubmissionSchema = z
-  .object({
-    params: z
-      .object({
-        id: z.coerce.number().int().positive(),
-      })
-      .strict(),
-    body: z.object(submissionEditableFields).strict(),
-  })
-  .strict();
+export const updateSubmissionSchema = z.object({
+  params: z
+    .object({
+      id: z.coerce.number().int().positive(),
+    })
+    .strict(),
+  body: z.object(submissionEditableFields).strict(),
+});
 
-export const getSubmissionSchema = z
-  .object({
-    params: z
-      .object({
-        id: z.coerce.number().int().positive(),
-      })
-      .strict(),
-  })
-  .strict();
+export const getSubmissionSchema = z.object({
+  params: z
+    .object({
+      id: z.coerce.number().int().positive(),
+    })
+    .strict(),
+});
 
 export type CreateSubmissionBody = z.infer<typeof createSubmissionSchema>["body"];
 export type UpdateSubmissionBody = z.infer<typeof updateSubmissionSchema>["body"];
