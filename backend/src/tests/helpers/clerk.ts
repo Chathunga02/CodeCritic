@@ -26,7 +26,7 @@ export async function createTestClerkUser(
     headers: authHeader(),
     body: JSON.stringify({
       email_address: [email],
-      password: "TestPass123!",
+      password: "TestPassword123456!",
     }),
   });
 
