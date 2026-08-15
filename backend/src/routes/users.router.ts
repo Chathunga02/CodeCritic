@@ -39,7 +39,7 @@ router.get(
 router.patch(
   "/me",
   requireAuth,
-  validate(z.object({ body: patchMeBodySchema }).strict()),
+  validate(z.object({ body: patchMeBodySchema })),
   catchAsync(async (req, res) => {
     const { technologyIds, ...scalarFields } = req.body as {
       technologyIds?: number[];
