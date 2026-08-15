@@ -1,8 +1,9 @@
 // Clerk helper for integration tests.
-// Creates real Clerk test-mode users and returns bearer JWTs via FAPI.
+// Creates real Clerk test-mode users and returns bearer JWTs.
 // requireAuth is never mocked — real tokens flow through the real middleware (V-21).
 
 const CLERK_API = "https://api.clerk.com/v1";
+const ORIGIN = "http://localhost:3000";
 
 function authHeader() {
   return {
@@ -11,8 +12,6 @@ function authHeader() {
   };
 }
 
-// Derives the Clerk FAPI URL from the publishable key.
-// Format: pk_test_BASE64ENCODED  where base64 decodes to "domain$"
 function deriveFapiUrl(publishableKey: string): string {
   const encoded = publishableKey.split("_")[2];
   const domain = Buffer.from(encoded, "base64")
@@ -30,8 +29,9 @@ export async function createTestClerkUser(
   emailPrefix: string,
 ): Promise<TestClerkUser> {
   const email = `${emailPrefix}-${Date.now()}@codecritic-test.dev`;
+  const fapiUrl = deriveFapiUrl(process.env.CLERK_PUBLISHABLE_KEY!);
 
-  // 1. Create the user in Clerk test mode.
+  // 1. Create user via backend API.
   const userRes = await fetch(`${CLERK_API}/users`, {
     method: "POST",
     headers: authHeader(),
@@ -45,41 +45,87 @@ export async function createTestClerkUser(
   }
   const { id: clerkId } = (await userRes.json()) as { id: string };
 
-  // 2. Create a one-time sign-in token (ticket).
+  // 2. Initialize a dev browser — required by Clerk development instances
+  //    before any FAPI sign-in request can proceed.
+  const devBrowserRes = await fetch(`${fapiUrl}/v1/dev_browser`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Origin": ORIGIN,
+      "Referer": `${ORIGIN}/`,
+    },
+  });
+  if (!devBrowserRes.ok) {
+    throw new Error(`Dev browser init failed: ${await devBrowserRes.text()}`);
+  }
+  const { token: devBrowserJwt } = (await devBrowserRes.json()) as {
+    token: string;
+  };
+
+  // 3. Create a one-time sign-in ticket via backend API.
   const signInTokenRes = await fetch(`${CLERK_API}/sign_in_tokens`, {
     method: "POST",
     headers: authHeader(),
     body: JSON.stringify({ user_id: clerkId, expires_in_seconds: 60 }),
   });
   if (!signInTokenRes.ok) {
-    throw new Error(`Clerk createSignInToken failed: ${await signInTokenRes.text()}`);
+    throw new Error(
+      `Clerk createSignInToken failed: ${await signInTokenRes.text()}`,
+    );
   }
   const { token: ticket } = (await signInTokenRes.json()) as { token: string };
 
-  // 3. Exchange the ticket via FAPI to get a real session JWT that
-  //    @clerk/express can verify via Bearer token authentication.
-  const fapiUrl = deriveFapiUrl(process.env.CLERK_PUBLISHABLE_KEY!);
-  const exchangeRes = await fetch(`${fapiUrl}/v1/client/sign_ins`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      "Origin": process.env.ALLOWED_ORIGINS || "http://localhost:3000",
+  // 4. Exchange the ticket via FAPI, authenticated with the dev browser token.
+  const exchangeRes = await fetch(
+    `${fapiUrl}/v1/client/sign_ins?__dev_session=${devBrowserJwt}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Origin": ORIGIN,
+        "Referer": `${ORIGIN}/`,
+      },
+      body: `strategy=ticket&ticket=${ticket}`,
     },
-    body: `strategy=ticket&ticket=${ticket}`,
-  });
+  );
   if (!exchangeRes.ok) {
-    throw new Error(`FAPI ticket exchange failed: ${await exchangeRes.text()}`);
+    throw new Error(
+      `FAPI ticket exchange failed: ${await exchangeRes.text()}`,
+    );
   }
 
   const data = (await exchangeRes.json()) as {
+    response?: { created_session_id?: string };
     client?: {
       sessions?: Array<{
+        id?: string;
         last_active_token?: { jwt?: string };
       }>;
     };
   };
 
-  const jwt = data.client?.sessions?.[0]?.last_active_token?.jwt;
+  // Try getting JWT directly from the response.
+  let jwt = data.client?.sessions?.[0]?.last_active_token?.jwt;
+
+  // Fall back: fetch from session tokens endpoint.
+  if (!jwt) {
+    const sessionId =
+      data.response?.created_session_id ?? data.client?.sessions?.[0]?.id;
+    if (sessionId) {
+      const tokenRes = await fetch(
+        `${fapiUrl}/v1/client/sessions/${sessionId}/tokens?__dev_session=${devBrowserJwt}`,
+        {
+          method: "POST",
+          headers: { "Origin": ORIGIN, "Referer": `${ORIGIN}/` },
+        },
+      );
+      if (tokenRes.ok) {
+        const tokenData = (await tokenRes.json()) as { jwt?: string };
+        jwt = tokenData.jwt;
+      }
+    }
+  }
+
   if (!jwt) {
     throw new Error(`No JWT in FAPI response: ${JSON.stringify(data)}`);
   }
