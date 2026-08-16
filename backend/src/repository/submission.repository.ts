@@ -42,6 +42,13 @@ interface CreateWithCriteriaInput {
   criteria: { label: string }[];
 }
 
+interface UpdateSubmissionInput {
+  title: string;
+  description: string;
+  githubUrl: string;
+  technologies: string[];
+}
+
 class SubmissionRepository {
   createWithCriteria(input: CreateWithCriteriaInput) {
     return prisma.submission.create({
@@ -68,6 +75,32 @@ class SubmissionRepository {
     return prisma.submission.findUnique({
       where: { id },
       select: submissionDetailSelect,
+    });
+  }
+
+  findOwnership(id: number) {
+    return prisma.submission.findUnique({
+      where: { id },
+      select: { id: true, authorId: true },
+    });
+  }
+
+  update(id: number, input: UpdateSubmissionInput) {
+    return prisma.submission.update({
+      where: { id },
+      data: {
+        title: input.title,
+        description: input.description,
+        githubUrl: input.githubUrl,
+        technologies: {
+          set: [],
+          connectOrCreate: input.technologies.map((name) => ({
+            where: { name },
+            create: { name },
+          })),
+        },
+      },
+      select: submissionSelect,
     });
   }
 }
