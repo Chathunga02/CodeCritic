@@ -103,6 +103,16 @@ class SubmissionRepository {
       select: submissionSelect,
     });
   }
+
+  findForReview(id: number) {
+    return prisma.submission.findUnique({
+      where: { id },
+      select: {
+        authorId: true,
+        criteria: { select: { id: true } },
+      },
+    });
+  }
 }
 
 export default new SubmissionRepository();
