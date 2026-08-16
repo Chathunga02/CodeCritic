@@ -11,6 +11,28 @@ const submissionSelect = {
   criteria: { select: { id: true, label: true } },
 } as const;
 
+const submissionDetailSelect = {
+  id: true,
+  title: true,
+  description: true,
+  githubUrl: true,
+  authorId: true,
+  createdAt: true,
+  author: { select: { id: true, username: true } },
+  technologies: { select: { id: true, name: true } },
+  criteria: { select: { id: true, label: true } },
+  reviews: {
+    select: {
+      id: true,
+      feedback: true,
+      createdAt: true,
+      reviewer: { select: { id: true, username: true } },
+      ratings: { select: { criterionId: true, rating: true } },
+    },
+  },
+  _count: { select: { reviews: true } },
+} as const;
+
 interface CreateWithCriteriaInput {
   authorId: number;
   title: string;
@@ -39,6 +61,13 @@ class SubmissionRepository {
         },
       },
       select: submissionSelect,
+    });
+  }
+
+  findById(id: number) {
+    return prisma.submission.findUnique({
+      where: { id },
+      select: submissionDetailSelect,
     });
   }
 }

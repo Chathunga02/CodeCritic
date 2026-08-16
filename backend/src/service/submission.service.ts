@@ -1,5 +1,6 @@
 import submissionRepository from "../repository/submission.repository.js";
 import type { CreateSubmissionBody } from "../models/submission.model.js";
+import { NotFoundError } from "../errors/NotFoundError.js";
 
 class SubmissionService {
   create(authorId: number, input: CreateSubmissionBody) {
@@ -13,6 +14,21 @@ class SubmissionService {
       technologies,
       criteria: input.criteria,
     });
+  }
+
+  async getById(id: number) {
+    const submission = await submissionRepository.findById(id);
+
+    if (!submission) {
+      throw new NotFoundError("Submission not found");
+    }
+
+    const { _count, ...rest } = submission;
+
+    return {
+      ...rest,
+      status: _count.reviews === 0 ? "PENDING" : "REVIEWED",
+    };
   }
 }
 

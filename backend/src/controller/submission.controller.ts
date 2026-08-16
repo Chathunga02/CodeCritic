@@ -13,6 +13,16 @@ class SubmissionController {
       data: submission,
     });
   });
+
+  getById = catchAsync(async (req: Request, res: Response) => {
+    const { id } = req.params as unknown as { id: number };
+    const submission = await submissionService.getById(id);
+
+    res.json({
+      success: true,
+      data: submission,
+    });
+  });
 }
 
 export default new SubmissionController();
