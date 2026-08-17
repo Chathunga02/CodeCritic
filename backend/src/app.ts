@@ -8,6 +8,7 @@ import { catchAsync } from "./utils/catchAsync.js";
 import technologiesRouter from "./routes/technologies.router.js";
 import usersRouter from "./routes/users.router.js";
 import feedRouter from "./routes/feed.routes.js";
+import submissionRouter from "./routes/submission.routes.js";
 
 const app = express();
 
