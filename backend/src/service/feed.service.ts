@@ -61,6 +61,7 @@ class FeedService {
 
       // 4. Debug gating
       if (query.debug && process.env.NODE_ENV !== "production") {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (scored as any)._score = fs;
       }
 
