@@ -2,169 +2,23 @@ import { Router } from "express";
 import { z } from "zod";
 import requireAuth from "../middlewares/requireAuth.js";
 import { validate } from "../middlewares/validate.middleware.js";
-import { catchAsync } from "../utils/catchAsync.js";
 import { patchMeBodySchema } from "../models/user.model.js";
-import { NotFoundError } from "../errors/NotFoundError.js";
-import prisma from "../config/prisma.js";
+import userController from "../controller/user.controller.js";
 
 const router = Router();
-
-const publicUserSelect = {
-  id: true,
-  username: true,
-  bio: true,
-  githubUrl: true,
-  karma: true,
-  createdAt: true,
-  technologies: { select: { id: true, name: true } },
-} as const;
 
 const paginationQuerySchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
   limit: z.coerce.number().int().min(1).max(50).default(20),
 });
 
-router.get(
-  "/me",
-  requireAuth,
-  catchAsync(async (req, res) => {
-    const user = await prisma.user.findUniqueOrThrow({
-      where: { id: req.user!.id },
-      select: publicUserSelect,
-    });
-    res.json({ success: true, data: user });
-  }),
-);
+router.get("/me", requireAuth, userController.getMe);
+router.patch("/me", requireAuth, validate(z.object({ body: patchMeBodySchema })), userController.updateMe);
+router.get("/me/submissions", requireAuth, validate(z.object({ query: paginationQuerySchema })), userController.getMySubmissions);
+router.get("/me/reviews", requireAuth, validate(z.object({ query: paginationQuerySchema })), userController.getMyReviews);
+router.get("/me/reviews-received", requireAuth, validate(z.object({ query: paginationQuerySchema })), userController.getMyReviewsReceived);
 
-router.patch(
-  "/me",
-  requireAuth,
-  validate(z.object({ body: patchMeBodySchema }).strict()),
-  catchAsync(async (req, res) => {
-    const { technologyIds, ...scalarFields } = req.body as {
-      technologyIds?: number[];
-      username?: string;
-      bio?: string | null;
-      githubUrl?: string | null;
-    };
-    const user = await prisma.user.update({
-      where: { id: req.user!.id },
-      data: {
-        ...scalarFields,
-        ...(technologyIds !== undefined && {
-          technologies: { set: technologyIds.map((id) => ({ id })) },
-        }),
-      },
-      select: publicUserSelect,
-    });
-    res.json({ success: true, data: user });
-  }),
-);
-
-router.get(
-  "/me/submissions",
-  requireAuth,
-  validate(z.object({ query: paginationQuerySchema })),
-  catchAsync(async (req, res) => {
-    const { page, limit } = req.query as unknown as { page: number; limit: number };
-    const skip = (page - 1) * limit;
-    const [submissions, total] = await Promise.all([
-      prisma.submission.findMany({
-        where: { authorId: req.user!.id },
-        select: {
-          id: true,
-          title: true,
-          githubUrl: true,
-          createdAt: true,
-          technologies: { select: { id: true, name: true } },
-          _count: { select: { reviews: true } },
-        },
-        orderBy: [{ createdAt: "desc" }, { id: "desc" }],
-        skip,
-        take: limit,
-      }),
-      prisma.submission.count({ where: { authorId: req.user!.id } }),
-    ]);
-    res.json({
-      success: true,
-      data: submissions,
-      meta: { page, limit, total, totalPages: Math.ceil(total / limit) },
-    });
-  }),
-);
-
-router.get(
-  "/me/reviews",
-  requireAuth,
-  validate(z.object({ query: paginationQuerySchema })),
-  catchAsync(async (req, res) => {
-    const { page, limit } = req.query as unknown as { page: number; limit: number };
-    const skip = (page - 1) * limit;
-    const [reviews, total] = await Promise.all([
-      prisma.review.findMany({
-        where: { reviewerId: req.user!.id },
-        select: {
-          id: true,
-          feedback: true,
-          createdAt: true,
-          submission: { select: { id: true, title: true } },
-        },
-        orderBy: { createdAt: "desc" },
-        skip,
-        take: limit,
-      }),
-      prisma.review.count({ where: { reviewerId: req.user!.id } }),
-    ]);
-    res.json({
-      success: true,
-      data: reviews,
-      meta: { page, limit, total, totalPages: Math.ceil(total / limit) },
-    });
-  }),
-);
-
-router.get(
-  "/me/reviews-received",
-  requireAuth,
-  validate(z.object({ query: paginationQuerySchema })),
-  catchAsync(async (req, res) => {
-    const { page, limit } = req.query as unknown as { page: number; limit: number };
-    const skip = (page - 1) * limit;
-    const [reviews, total] = await Promise.all([
-      prisma.review.findMany({
-        where: { submission: { authorId: req.user!.id } },
-        select: {
-          id: true,
-          feedback: true,
-          createdAt: true,
-          reviewer: { select: { id: true, username: true } },
-          submission: { select: { id: true, title: true } },
-        },
-        orderBy: { createdAt: "desc" },
-        skip,
-        take: limit,
-      }),
-      prisma.review.count({ where: { submission: { authorId: req.user!.id } } }),
-    ]);
-    res.json({
-      success: true,
-      data: reviews,
-      meta: { page, limit, total, totalPages: Math.ceil(total / limit) },
-    });
-  }),
-);
-
-// Must be LAST — catches /:username, don't move above /me/* routes
-router.get(
-  "/:username",
-  catchAsync(async (req, res) => {
-    const user = await prisma.user.findUnique({
-      where: { username: String(req.params.username) },
-      select: publicUserSelect,
-    });
-    if (!user) throw new NotFoundError("User not found");
-    res.json({ success: true, data: user });
-  }),
-);
+// Public — no auth. Must be last.
+router.get("/:username", userController.getByUsername);
 
 export default router;
