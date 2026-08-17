@@ -1,0 +1,159 @@
+{
+  "info": {
+    "name": "CodeCritic - Feed",
+    "description": "Endpoints for the Feed slice (Member C)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Public Feed",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/feed",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "feed"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Public Feed (Paginated)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/feed?page=2&limit=5",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "feed"
+          ],
+          "query": [
+            {
+              "key": "page",
+              "value": "2"
+            },
+            {
+              "key": "limit",
+              "value": "5"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Public Feed (Search)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/feed?search=react",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "feed"
+          ],
+          "query": [
+            {
+              "key": "search",
+              "value": "react"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Public Feed (Technologies)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/feed?technologies=react,nodejs",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "feed"
+          ],
+          "query": [
+            {
+              "key": "technologies",
+              "value": "react,nodejs"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Personalized Feed",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/feed/personalized",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "feed",
+            "personalized"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Personalized Feed (Debug Scores)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/feed/personalized?debug=1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "feed",
+            "personalized"
+          ],
+          "query": [
+            {
+              "key": "debug",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

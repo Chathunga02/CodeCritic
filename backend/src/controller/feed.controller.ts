@@ -16,6 +16,21 @@ class FeedController {
       meta
     });
   });
+
+  getPersonalizedFeed = catchAsync(async (req: Request, res: Response) => {
+    // req.query is validated
+    const query = req.query as unknown as FeedQuery;
+    // req.user is set by requireAuth
+    const userId = req.user!.id;
+
+    const { items, meta } = await feedService.getPersonalizedFeed(query, userId);
+
+    res.json({
+      success: true,
+      data: items,
+      meta
+    });
+  });
 }
 
 export const feedController = new FeedController();

@@ -75,6 +75,35 @@ class FeedRepository {
 
     return [items, count];
   }
+
+  /**
+   * Fetches the user's technology IDs.
+   */
+  async getUserTechnologies(userId: number): Promise<number[]> {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        technologies: {
+          select: { id: true }
+        }
+      }
+    });
+    return user?.technologies.map(t => t.id) ?? [];
+  }
+
+  /**
+   * Fetches the 200-item bounded window for the personalized feed.
+   */
+  async getPersonalizedFeedWindow(windowSize: number): Promise<FeedSubmission[]> {
+    return prisma.submission.findMany({
+      select: feedWindowSelect,
+      orderBy: [
+        { createdAt: 'desc' },
+        { id: 'desc' },
+      ],
+      take: windowSize,
+    });
+  }
 }
 
 export const feedRepository = new FeedRepository();
