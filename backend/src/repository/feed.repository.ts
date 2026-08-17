@@ -1,5 +1,5 @@
 import prisma from "../config/prisma.js";
-import { Prisma } from "../generated/prisma/index.js";
+import { Prisma } from "../generated/prisma/client.js";
 
 // Exact field list required by SCHEMA §7
 const feedWindowSelect = {
