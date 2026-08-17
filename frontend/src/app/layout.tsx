@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import ApiClientProvider from "@/services/ApiClientProvider";
 import AuthSync from "@/store/AuthSync";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import "./globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -17,7 +19,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <body className="min-h-full flex flex-col">
           <ApiClientProvider>
             <AuthSync />
-            {children}
+            <Navbar />
+            <main className="flex-1">{children}</main>
+            <Footer />
           </ApiClientProvider>
         </body>
       </html>
