@@ -27,6 +27,8 @@ app.use("/api/technologies", technologiesRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/feed", feedRouter);
 
+app.use("/api/submissions", submissionRouter);
+
 app.get(
   "/api/health",
   catchAsync(async (_req, res) => {
