@@ -15,9 +15,10 @@ export const validate = (schema: ZodType) => (req: Request, _res: Response, next
   }
 
   const parsed = result.data as { body?: unknown; query?: unknown; params?: unknown };
-  req.body = parsed.body;
-  req.query = parsed.query as Request["query"];
-  req.params = parsed.params as Request["params"];
+  
+  Object.defineProperty(req, 'body', { value: parsed.body, writable: true });
+  Object.defineProperty(req, 'query', { value: parsed.query, writable: true });
+  Object.defineProperty(req, 'params', { value: parsed.params, writable: true });
 
   next();
 };

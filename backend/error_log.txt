@@ -1,0 +1,11 @@
+TypeError: Cannot set property query of #<IncomingMessage> which has only a getter
+    at <anonymous> (E:\CodeCritic\backend\src\middlewares\validate.middleware.ts:19:7)
+    at Layer.handleRequest (E:\CodeCritic\backend\node_modules\router\lib\layer.js:152:17)
+    at next (E:\CodeCritic\backend\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (E:\CodeCritic\backend\node_modules\router\lib\route.js:117:3)
+    at handle (E:\CodeCritic\backend\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (E:\CodeCritic\backend\node_modules\router\lib\layer.js:152:17)
+    at E:\CodeCritic\backend\node_modules\router\index.js:295:15
+    at processParams (E:\CodeCritic\backend\node_modules\router\index.js:582:12)
+    at next (E:\CodeCritic\backend\node_modules\router\index.js:291:5)
+    at router.handle (E:\CodeCritic\backend\node_modules\router\index.js:186:3)
