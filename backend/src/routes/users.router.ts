@@ -2,22 +2,10 @@ import { Router } from "express";
 import { z } from "zod";
 import requireAuth from "../middlewares/requireAuth.js";
 import { validate } from "../middlewares/validate.middleware.js";
-import { catchAsync } from "../utils/catchAsync.js";
 import { patchMeBodySchema } from "../models/user.model.js";
-import { NotFoundError } from "../errors/NotFoundError.js";
-import prisma from "../config/prisma.js";
+import userController from "../controller/user.controller.js";
 
 const router = Router();
-
-const publicUserSelect = {
-  id: true,
-  username: true,
-  bio: true,
-  githubUrl: true,
-  karma: true,
-  createdAt: true,
-  technologies: { select: { id: true, name: true } },
-} as const;
 
 const paginationQuerySchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
@@ -154,17 +142,7 @@ router.get(
   }),
 );
 
-// Must be LAST — catches /:username, don't move above /me/* routes
-router.get(
-  "/:username",
-  catchAsync(async (req, res) => {
-    const user = await prisma.user.findUnique({
-      where: { username: String(req.params.username) },
-      select: publicUserSelect,
-    });
-    if (!user) throw new NotFoundError("User not found");
-    res.json({ success: true, data: user });
-  }),
-);
+// Public — no auth. Must be last.
+router.get("/:username", userController.getByUsername);
 
 export default router;

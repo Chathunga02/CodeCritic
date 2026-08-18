@@ -7,6 +7,7 @@ import { errorHandler } from "./middlewares/errorHandler.middleware.js";
 import { catchAsync } from "./utils/catchAsync.js";
 import technologiesRouter from "./routes/technologies.router.js";
 import usersRouter from "./routes/users.router.js";
+import submissionRouter from "./routes/submission.routes.js";
 
 const app = express();
 
@@ -23,6 +24,8 @@ app.use(clerkMiddleware());
 
 app.use("/api/technologies", technologiesRouter);
 app.use("/api/users", usersRouter);
+
+app.use("/api/submissions", submissionRouter);
 
 app.get(
   "/api/health",
