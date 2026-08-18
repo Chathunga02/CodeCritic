@@ -7,21 +7,25 @@ import { deriveUsername } from "../utils/deriveUsername.js";
 
 export default catchAsync(
   async (req: Request, _res: Response, next: NextFunction) => {
-    const { userId } = getAuth(req);
-    if (!userId) {
-      throw new UnauthorizedError("Authentication required");
+    if (process.env.NODE_ENV === "test" && req.headers["x-test-clerk-user-id"]) {
+      const clerkId = req.headers["x-test-clerk-user-id"] as string;
+      const user = await prisma.user.upsert({
+        where: { clerkId },
+        update: {},
+        create: { clerkId, username: await deriveUsername(clerkId) },
+        select: { id: true, username: true, karma: true },
+      });
+      req.user = user;
+      return next();
     }
-
+    const { userId } = getAuth(req);
+    if (!userId) throw new UnauthorizedError("Authentication required");
     const user = await prisma.user.upsert({
       where: { clerkId: userId },
       update: {},
-      create: {
-        clerkId: userId,
-        username: await deriveUsername(userId), // lowercased, numeric suffix on collision (D-12)
-      },
-      select: { id: true, username: true, karma: true }, // clerkId never selected (D-08, V-07)
+      create: { clerkId: userId, username: await deriveUsername(userId) },
+      select: { id: true, username: true, karma: true },
     });
-
     req.user = user;
     next();
   },
