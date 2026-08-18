@@ -4,6 +4,8 @@ import requireAuth from "../middlewares/requireAuth.js";
 import { validate } from "../middlewares/validate.middleware.js";
 import { patchMeBodySchema } from "../models/user.model.js";
 import userController from "../controller/user.controller.js";
+import { catchAsync } from "../utils/catchAsync.js";
+import prisma from "../config/prisma.js";
 
 const router = Router();
 
