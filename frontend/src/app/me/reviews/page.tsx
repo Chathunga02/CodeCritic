@@ -38,13 +38,13 @@ export default function MyReviewsPage() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">Reviews I've given</h1>
+        <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">Reviews I&apos;ve given</h1>
         {meta && <span className="text-sm text-zinc-400">{meta.total} total</span>}
       </div>
 
       {reviews.length === 0 ? (
         <div className="mt-10 text-center">
-          <p className="text-sm text-zinc-500">You haven't reviewed any submissions yet.</p>
+          <p className="text-sm text-zinc-500">You haven&apos;t reviewed any submissions yet.</p>
           <Link href="/" className="mt-3 inline-block text-sm font-medium text-indigo-600 hover:underline">
             Browse the feed →
           </Link>
