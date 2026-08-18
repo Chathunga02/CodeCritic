@@ -1,10 +1,66 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { useAuthStore } from "@/store/authStore";
+import { useFeedFilters } from "@/store/feedFilters";
+import { api } from "@/services/api";
+import { FeedSubmission } from "@/types/feed";
+import { FeedCard } from "@/components/feed/FeedCard";
+import { FeedFilters } from "@/components/feed/FeedFilters";
 
 export default function Home() {
-  const { isLoaded, userId, username } = useAuthStore();
+  const { isLoaded, userId } = useAuthStore();
+  const { search, technologies } = useFeedFilters();
+  
+  const [feedData, setFeedData] = useState<FeedSubmission[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!isLoaded) return; // Wait for auth to resolve
+
+    let isMounted = true;
+
+    async function fetchFeed() {
+      if (isMounted) {
+        setLoading(true);
+        setError(null);
+      }
+      try {
+        const hasFilters = search.trim().length > 0 || technologies.length > 0;
+        
+        // Build query string
+        const params = new URLSearchParams();
+        if (search) params.append('search', search);
+        if (technologies.length > 0) params.append('technologies', technologies.join(','));
+        // We'll append debug=1 in dev so we can see scores in the demo
+        if (process.env.NODE_ENV !== 'production') {
+           params.append('debug', '1');
+        }
+
+        const queryString = params.toString();
+        const endpoint = (userId && !hasFilters) 
+          ? `/feed/personalized?${queryString}`
+          : `/feed?${queryString}`;
+
+        const res = await api.get<FeedSubmission[]>(endpoint);
+        
+        if (isMounted && res.success) {
+          setFeedData(res.data);
+        }
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : "Failed to load feed";
+        if (isMounted) setError(message);
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    }
+
+    fetchFeed();
+
+    return () => { isMounted = false; };
+  }, [isLoaded, userId, search, technologies]);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-16">
@@ -34,31 +90,52 @@ export default function Home() {
         </div>
       </div>
 
-      {isLoaded && userId && (
-        <div className="mt-12 rounded-2xl border border-indigo-100 bg-indigo-50 px-6 py-5 dark:border-indigo-900 dark:bg-indigo-950/40">
-          <p className="text-sm font-medium text-indigo-800 dark:text-indigo-300">Welcome back, <span className="font-semibold">@{username}</span> 👋</p>
-          <p className="mt-1 text-xs text-indigo-600 dark:text-indigo-400">The feed will appear here once it is live. In the meantime, submit your code or update your profile.</p>
-          <div className="mt-3 flex gap-3">
-            <Link href="/submissions/new" className="text-xs font-medium text-indigo-700 underline underline-offset-2 hover:text-indigo-900">Submit code →</Link>
-            <Link href="/settings" className="text-xs font-medium text-indigo-700 underline underline-offset-2 hover:text-indigo-900">Edit profile →</Link>
-            <Link href="/me/requests" className="text-xs font-medium text-indigo-700 underline underline-offset-2 hover:text-indigo-900">My submissions →</Link>
+      <div className="mt-16">
+        <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-50 mb-6">Review Requests</h2>
+        
+        <FeedFilters />
+
+        {loading ? (
+          <div className="space-y-4">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-40 rounded-2xl border border-zinc-200 bg-zinc-50 animate-pulse dark:border-zinc-800 dark:bg-zinc-900/50" />
+            ))}
           </div>
+        ) : error ? (
+          <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-center text-red-600 dark:border-red-900/50 dark:bg-red-950/20 dark:text-red-400">
+            {error}
+          </div>
+        ) : feedData.length === 0 ? (
+          <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-12 text-center dark:border-zinc-800 dark:bg-zinc-900/50">
+            <h3 className="text-sm font-medium text-zinc-900 dark:text-zinc-100">No submissions found</h3>
+            <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+              Try adjusting your search or filters to find what you&apos;re looking for.
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {feedData.map((item) => (
+              <FeedCard key={item.id} item={item} />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {!userId && (
+        <div className="mt-16 grid gap-6 sm:grid-cols-3">
+          {[
+            { icon: "📝", title: "Submit your code", desc: "Share a GitHub repo, add review criteria, and get structured feedback from the community." },
+            { icon: "🔍", title: "Review others", desc: "Browse open review requests, leave detailed feedback per criterion, and earn karma." },
+            { icon: "⚡", title: "Earn karma", desc: "Every review you give earns you karma. A higher karma signals a trusted reviewer." },
+          ].map((f) => (
+            <div key={f.title} className="rounded-2xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
+              <span className="text-2xl">{f.icon}</span>
+              <h3 className="mt-3 text-sm font-semibold text-zinc-900 dark:text-zinc-50">{f.title}</h3>
+              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">{f.desc}</p>
+            </div>
+          ))}
         </div>
       )}
-
-      <div className="mt-16 grid gap-6 sm:grid-cols-3">
-        {[
-          { icon: "📝", title: "Submit your code", desc: "Share a GitHub repo, add review criteria, and get structured feedback from the community." },
-          { icon: "🔍", title: "Review others", desc: "Browse open review requests, leave detailed feedback per criterion, and earn karma." },
-          { icon: "⚡", title: "Earn karma", desc: "Every review you give earns you karma. A higher karma signals a trusted reviewer." },
-        ].map((f) => (
-          <div key={f.title} className="rounded-2xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
-            <span className="text-2xl">{f.icon}</span>
-            <h3 className="mt-3 text-sm font-semibold text-zinc-900 dark:text-zinc-50">{f.title}</h3>
-            <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">{f.desc}</p>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }
