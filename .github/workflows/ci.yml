@@ -33,46 +33,6 @@ jobs:
       postgres:
         image: postgres:16
         env:
-          POSTGRES_USER: test
-          POSTGRES_PASSWORD: test
-          POSTGRES_DB: codecritic_test
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-    env:
-      DATABASE_URL: postgresql://test:test@localhost:5432/codecritic_test
-      DATABASE_URL_TEST: postgresql://test:test@localhost:5432/codecritic_test
-      NODE_ENV: test
-      CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
-      CLERK_PUBLISHABLE_KEY: ${{ secrets.CLERK_PUBLISHABLE_KEY }}
-      ALLOWED_ORIGINS: http://localhost:3000
-      RATE_LIMIT_WRITE_TEST: "1000"
-      PORT: "4000"
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: npm
-          cache-dependency-path: backend/package-lock.json
-      - run: npm ci
-      - run: npx prisma generate
-      - run: npx prisma migrate deploy
-      - run: npm run test:integration
-
-  integration:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: backend
-    services:
-      postgres:
-        image: postgres:16
-        env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: codecritic_test
@@ -85,24 +45,26 @@ jobs:
           --health-retries 5
     env:
       NODE_ENV: test
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/codecritic_test
       DATABASE_URL_TEST: postgresql://postgres:postgres@localhost:5432/codecritic_test
       CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
-      # Publishable key and the two test-user ids are not secrets (QA sec2), so they
-      # live directly here rather than in repo secrets.
       CLERK_PUBLISHABLE_KEY: pk_test_a2V5LW9jdG9wdXMtOTEuY2xlcmsuYWNjb3VudHMuZGV2JA
-      TEST_AUTHOR_CLERK_ID: user_3I0JamYXwcjGC2G37OVHl0yjekU
-      TEST_REVIEWER_CLERK_ID: user_3I0JaoSThec8d3x4A4iB86ta8nZ
-      RATE_LIMIT_WRITE_TEST: 20
+      TEST_AUTHOR_CLERK_ID: user_3I5sfapwrxtnFSGZxlCaXTVW4bL
+      TEST_REVIEWER_CLERK_ID: user_3I5sqvJPO8TCUTA8tDcS2zIWJoJ
+      RATE_LIMIT_WRITE_TEST: "20"
       ALLOWED_ORIGINS: http://localhost:3000
+      PORT: "4000"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
           cache-dependency-path: backend/package-lock.json
       - run: npm ci
-      - run: npm test
+      - run: npx prisma generate
+      - run: npx prisma migrate deploy
+      - run: npm run test:integration
 
   frontend:
     runs-on: ubuntu-latest
