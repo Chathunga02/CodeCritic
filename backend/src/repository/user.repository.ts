@@ -9,6 +9,7 @@ export const publicUserSelect = {
   karma: true,
   createdAt: true,
   technologies: { select: { id: true, name: true } },
+  _count: { select: { reviews: true, submissions: true } },
 } as const;
 
 interface PaginationInput { page: number; limit: number; }
@@ -44,6 +45,7 @@ class UserRepository {
         select: {
           id: true, title: true, githubUrl: true, createdAt: true,
           technologies: { select: { id: true, name: true } },
+  _count: { select: { reviews: true, submissions: true } },
           _count: { select: { reviews: true } },
         },
         orderBy: [{ createdAt: "desc" }, { id: "desc" }],
