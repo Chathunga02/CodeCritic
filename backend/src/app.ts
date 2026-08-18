@@ -8,6 +8,7 @@ import { catchAsync } from "./utils/catchAsync.js";
 import technologiesRouter from "./routes/technologies.router.js";
 import usersRouter from "./routes/users.router.js";
 import submissionRouter from "./routes/submission.routes.js";
+import feedRouter from "./routes/feed.routes.js";
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use("/api/technologies", technologiesRouter);
 app.use("/api/users", usersRouter);
 
 app.use("/api/submissions", submissionRouter);
+app.use("/api/feed", feedRouter);
 
 app.get(
   "/api/health",
