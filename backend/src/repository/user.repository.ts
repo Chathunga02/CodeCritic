@@ -1,7 +1,7 @@
 import prisma from "../config/prisma.js";
 import type { PatchMeBody } from "../models/user.model.js";
 
-const publicUserSelect = {
+export const publicUserSelect = {
   id: true,
   username: true,
   bio: true,
