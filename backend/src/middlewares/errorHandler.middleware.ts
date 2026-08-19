@@ -16,6 +16,7 @@ export const errorHandler = (error: unknown, _req: Request, res: Response, _next
 
   const message = error instanceof Error ? (error.stack ?? error.message) : String(error);
   logger.error(message);
+  import("fs").then(fs => fs.appendFileSync("error_log.txt", message + "\n"));
 
   res.status(500).json({
     success: false,

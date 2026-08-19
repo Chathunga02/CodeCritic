@@ -15,6 +15,7 @@ export const validate = (schema: ZodType) => (req: Request, _res: Response, next
   }
 
   const parsed = result.data as { body?: unknown; query?: unknown; params?: unknown };
+  
   req.body = parsed.body;
 
   // Express 5: req.query is a read-only getter derived from the URL.

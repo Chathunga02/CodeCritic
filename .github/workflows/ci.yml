@@ -51,6 +51,7 @@ jobs:
       - run: npm run build
       - run: npm test
 
+
   integration:
     runs-on: ubuntu-latest
     defaults:
@@ -92,6 +93,7 @@ jobs:
       - run: npx prisma generate
       - run: npx prisma migrate deploy
       - run: npm run test:integration
+
 
   frontend:
     runs-on: ubuntu-latest
