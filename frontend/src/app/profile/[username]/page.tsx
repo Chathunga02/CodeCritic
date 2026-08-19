@@ -37,7 +37,7 @@ export default function ProfilePage() {
           {profile.bio && <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{profile.bio}</p>}
           {profile.githubUrl && (
             <a href={profile.githubUrl} target="_blank" rel="noopener noreferrer"
-              className="mt-1 block text-xs text-indigo-600 hover:underline">
+              className="mt-1 block text-xs text-indigo-600 hover:text-indigo-800 dark:hover:text-indigo-400">
               {profile.githubUrl}
             </a>
           )}

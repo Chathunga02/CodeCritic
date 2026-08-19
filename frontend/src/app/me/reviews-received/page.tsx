@@ -28,7 +28,7 @@ export default function ReviewsReceivedPage() {
   }, [isLoaded, userId, page]);
 
   if (!isLoaded) return <div className="p-8 text-sm text-zinc-500">Loading…</div>;
-  if (!userId) return <div className="p-8 text-sm text-zinc-500"><Link href="/sign-in" className="text-indigo-600 underline">Sign in</Link> to view your reviews.</div>;
+  if (!userId) return <div className="p-8 text-sm text-zinc-500"><Link href="/sign-in" className="font-medium text-indigo-600 hover:text-indigo-800 dark:hover:text-indigo-400">Sign in</Link> to view your reviews.</div>;
   if (error) return <div className="p-8 text-sm text-red-500">{error}</div>;
 
   return (
@@ -46,11 +46,11 @@ export default function ReviewsReceivedPage() {
                 <div>
                   <p className="text-xs text-zinc-500">
                     On{" "}
-                    <Link href={`/submissions/${r.submission.id}`} className="text-indigo-600 hover:underline">
+                    <Link href={`/submissions/${r.submission.id}`} className="text-indigo-600 hover:text-indigo-800 dark:hover:text-indigo-400">
                       {r.submission.title}
                     </Link>
                     {" "}by{" "}
-                    <Link href={`/profile/${r.reviewer.username}`} className="text-indigo-600 hover:underline">
+                    <Link href={`/profile/${r.reviewer.username}`} className="text-indigo-600 hover:text-indigo-800 dark:hover:text-indigo-400">
                       {r.reviewer.username}
                     </Link>
                   </p>

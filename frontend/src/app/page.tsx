@@ -101,8 +101,24 @@ export default function Home() {
         </div>
       )}
 
-      <div className={showHero ? "mt-16" : ""}>
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[180px_minmax(0,1fr)_260px]">
+      {!userId && (
+        <div className={`grid gap-6 sm:grid-cols-3 ${showHero ? "mt-16" : ""}`}>
+          {[
+            { icon: "📝", title: "Submit your code", desc: "Share a GitHub repo, add review criteria, and get structured feedback from the community." },
+            { icon: "🔍", title: "Review others", desc: "Browse open review requests, leave detailed feedback per criterion, and earn karma." },
+            { icon: "⚡", title: "Earn karma", desc: "Every review you give earns you karma. A higher karma signals a trusted reviewer." },
+          ].map((f) => (
+            <div key={f.title} className="border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
+              <span className="text-2xl">{f.icon}</span>
+              <h3 className="mt-3 text-sm font-semibold text-zinc-900 dark:text-zinc-50">{f.title}</h3>
+              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">{f.desc}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <div className={!userId ? "mt-16" : ""}>
+        <div className={`grid grid-cols-1 gap-8 ${userId ? "lg:grid-cols-[180px_minmax(0,1fr)_260px]" : "lg:grid-cols-[180px_minmax(0,1fr)]"}`}>
           <aside className="hidden lg:block">
             <FeedFilterSidebar mode={mode} onChange={setMode} />
           </aside>
@@ -114,7 +130,7 @@ export default function Home() {
               <div className="border border-zinc-200 bg-zinc-50 p-12 text-center dark:border-zinc-800 dark:bg-zinc-900/50">
                 <h3 className="text-sm font-medium text-zinc-900 dark:text-zinc-100">Sign in for recommendations</h3>
                 <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-                  <Link href="/sign-in" className="text-indigo-600 underline">
+                  <Link href="/sign-in" className="font-medium text-indigo-600 hover:text-indigo-800 dark:hover:text-indigo-400">
                     Sign in
                   </Link>{" "}
                   to see submissions matched to your tech stack.
@@ -142,25 +158,13 @@ export default function Home() {
             )}
           </div>
 
-          <aside className="hidden lg:block">{userId && <TrendingSidebar />}</aside>
+          {userId && (
+            <aside className="hidden lg:block">
+              <TrendingSidebar />
+            </aside>
+          )}
         </div>
       </div>
-
-      {!userId && (
-        <div className="mt-16 grid gap-6 sm:grid-cols-3">
-          {[
-            { icon: "📝", title: "Submit your code", desc: "Share a GitHub repo, add review criteria, and get structured feedback from the community." },
-            { icon: "🔍", title: "Review others", desc: "Browse open review requests, leave detailed feedback per criterion, and earn karma." },
-            { icon: "⚡", title: "Earn karma", desc: "Every review you give earns you karma. A higher karma signals a trusted reviewer." },
-          ].map((f) => (
-            <div key={f.title} className="border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
-              <span className="text-2xl">{f.icon}</span>
-              <h3 className="mt-3 text-sm font-semibold text-zinc-900 dark:text-zinc-50">{f.title}</h3>
-              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">{f.desc}</p>
-            </div>
-          ))}
-        </div>
-      )}
     </div>
   );
 }

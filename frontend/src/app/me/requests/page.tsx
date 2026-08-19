@@ -29,7 +29,7 @@ export default function MyRequestsPage() {
   }, [isLoaded, userId, page]);
 
   if (!isLoaded) return <div className="p-8 text-sm text-zinc-500">Loading…</div>;
-  if (!userId) return <div className="p-8 text-sm text-zinc-500"><Link href="/sign-in" className="text-indigo-600 underline">Sign in</Link> to view your submissions.</div>;
+  if (!userId) return <div className="p-8 text-sm text-zinc-500"><Link href="/sign-in" className="font-medium text-indigo-600 hover:text-indigo-800 dark:hover:text-indigo-400">Sign in</Link> to view your submissions.</div>;
   if (error) return <div className="p-8 text-sm text-red-500">{error}</div>;
 
   return (
@@ -40,7 +40,7 @@ export default function MyRequestsPage() {
       {submissions.length === 0 ? (
         <p className="mt-6 text-sm text-zinc-500">
           No submissions yet.{" "}
-          <Link href="/submissions/new" className="text-indigo-600 underline">Post one now.</Link>
+          <Link href="/submissions/new" className="font-medium text-indigo-600 hover:text-indigo-800 dark:hover:text-indigo-400">Post one now.</Link>
         </p>
       ) : (
         <ul className="mt-6 divide-y divide-zinc-200 dark:divide-zinc-800">

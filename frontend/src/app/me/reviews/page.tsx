@@ -31,7 +31,7 @@ export default function MyReviewsPage() {
   if (!isLoaded) return <div className="p-8 text-sm text-zinc-500">Loading…</div>;
   if (!userId) return (
     <div className="p-8 text-sm text-zinc-500">
-      <Link href="/sign-in" className="text-indigo-600 underline">Sign in</Link> to view your reviews.
+      <Link href="/sign-in" className="font-medium text-indigo-600 hover:text-indigo-800 dark:hover:text-indigo-400">Sign in</Link> to view your reviews.
     </div>
   );
   if (error) return <div className="p-8 text-sm text-red-500">{error}</div>;
@@ -47,7 +47,7 @@ export default function MyReviewsPage() {
       {reviews.length === 0 ? (
         <div className="mt-10 text-center">
           <p className="text-sm text-zinc-500">You haven&apos;t reviewed any submissions yet.</p>
-          <Link href="/" className="mt-3 inline-block text-sm font-medium text-indigo-600 hover:underline">
+          <Link href="/" className="mt-3 inline-block text-sm font-medium text-indigo-600 hover:text-indigo-800 dark:hover:text-indigo-400">
             Browse the feed →
           </Link>
         </div>
@@ -59,7 +59,7 @@ export default function MyReviewsPage() {
                 <div className="flex-1 min-w-0">
                   <p className="text-xs text-zinc-500">
                     Review on{" "}
-                    <Link href={`/submissions/${r.submission.id}`} className="font-medium text-indigo-600 hover:underline">
+                    <Link href={`/submissions/${r.submission.id}`} className="font-medium text-indigo-600 hover:text-indigo-800 dark:hover:text-indigo-400">
                       {r.submission.title}
                     </Link>
                   </p>

@@ -148,7 +148,7 @@ export default function SubmissionDetailPage() {
           <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">Description</h2>
           <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">{submission.description}</p>
 
-          <a href={submission.githubUrl} target="_blank" rel="noreferrer" className="mt-4 inline-block text-sm font-medium text-indigo-600 underline underline-offset-2 hover:text-indigo-800">
+          <a href={submission.githubUrl} target="_blank" rel="noreferrer" className="mt-4 inline-block text-sm font-medium text-indigo-600 hover:text-indigo-800 dark:hover:text-indigo-400">
             View on GitHub →
           </a>
 
@@ -181,7 +181,7 @@ export default function SubmissionDetailPage() {
           <div className="mt-4">
             {!isLoaded ? null : !userId ? (
               <p className="text-sm text-zinc-500">
-                <Link href="/sign-in" className="text-indigo-600 underline">
+                <Link href="/sign-in" className="font-medium text-indigo-600 hover:text-indigo-800 dark:hover:text-indigo-400">
                   Sign in
                 </Link>{" "}
                 to leave a review.

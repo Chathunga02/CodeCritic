@@ -73,7 +73,7 @@ export default function MePage() {
   }, [isLoaded, userId]);
 
   if (!isLoaded) return <div className="p-8 text-sm text-zinc-500">Loading…</div>;
-  if (!userId) return <div className="p-8 text-sm text-zinc-500"><Link href="/sign-in" className="text-indigo-600 underline">Sign in</Link> to view your profile.</div>;
+  if (!userId) return <div className="p-8 text-sm text-zinc-500"><Link href="/sign-in" className="font-medium text-indigo-600 hover:text-indigo-800 dark:hover:text-indigo-400">Sign in</Link> to view your profile.</div>;
   if (error) return <div className="p-8 text-sm text-red-500">{error}</div>;
   if (!profile) return <div className="p-8 text-sm text-zinc-500">Loading…</div>;
 
@@ -146,7 +146,7 @@ export default function MePage() {
         {/* Left column: identity */}
         <div className="flex flex-col gap-8">
           <div className="border border-zinc-200 p-6 text-center dark:border-zinc-800">
-            <div className="mx-auto flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-indigo-600 text-2xl font-semibold text-white">
+            <div className="mx-auto flex h-32 w-32 items-center justify-center overflow-hidden rounded-full bg-indigo-600 text-4xl font-semibold text-white">
               {user?.imageUrl ? (
                 <img src={user.imageUrl} alt={profile.username} className="h-full w-full object-cover" />
               ) : (
@@ -170,7 +170,7 @@ export default function MePage() {
             ) : (
               <div className="mt-4">
                 <h1 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">{profile.username}</h1>
-                <button onClick={startEditingUsername} className="mt-1 text-xs text-indigo-600 hover:underline">Edit username</button>
+                <button onClick={startEditingUsername} className="mt-1 text-xs text-indigo-600 hover:text-indigo-800 dark:hover:text-indigo-400">Edit username</button>
               </div>
             )}
 
@@ -218,7 +218,7 @@ export default function MePage() {
           <div className="border border-zinc-200 p-6 dark:border-zinc-800">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">About</h2>
-              {!editingAbout && <button onClick={startEditingAbout} className="text-xs text-indigo-600 hover:underline">Edit</button>}
+              {!editingAbout && <button onClick={startEditingAbout} className="text-xs text-indigo-600 hover:text-indigo-800 dark:hover:text-indigo-400">Edit</button>}
             </div>
 
             {editingAbout ? (
@@ -251,7 +251,7 @@ export default function MePage() {
               <div className="mt-3">
                 <p className="text-sm text-zinc-600 dark:text-zinc-400">{profile.bio || "No bio yet."}</p>
                 {profile.githubUrl && (
-                  <a href={profile.githubUrl} target="_blank" rel="noopener noreferrer" className="mt-2 block text-xs text-indigo-600 hover:underline">
+                  <a href={profile.githubUrl} target="_blank" rel="noopener noreferrer" className="mt-2 block text-xs text-indigo-600 hover:text-indigo-800 dark:hover:text-indigo-400">
                     {profile.githubUrl}
                   </a>
                 )}
@@ -288,7 +288,7 @@ export default function MePage() {
           <div className="border border-zinc-200 p-6 dark:border-zinc-800">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">Recent Activity</h2>
-              <Link href="/me/reviews" className="text-xs font-medium text-indigo-600 hover:underline">View all</Link>
+              <Link href="/me/reviews" className="text-xs font-medium text-indigo-600 hover:text-indigo-800 dark:hover:text-indigo-400">View all</Link>
             </div>
 
             {recentActivity.length === 0 ? (
