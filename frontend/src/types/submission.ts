@@ -27,6 +27,9 @@ export interface ReviewAuthor {
 export interface EmbeddedReview {
   id: number;
   feedback: string;
+  strengths: string;
+  improvements: string;
+  resources?: string;
   createdAt: string;
   reviewer: ReviewAuthor;
   ratings: CriterionRating[];

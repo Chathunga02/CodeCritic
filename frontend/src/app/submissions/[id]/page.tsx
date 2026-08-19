@@ -176,7 +176,10 @@ export default function SubmissionDetailPage() {
                     );
                   })}
                 </div>
-                <p className="mt-2 whitespace-pre-wrap text-sm text-zinc-700 dark:text-zinc-300">{r.feedback}</p>
+                {r.strengths && <div className="mt-2"><p className="text-xs font-semibold text-green-600 dark:text-green-400">✅ Strengths</p><p className="text-sm text-zinc-700 dark:text-zinc-300 whitespace-pre-wrap">{r.strengths}</p></div>}
+                {r.improvements && <div className="mt-2"><p className="text-xs font-semibold text-amber-600 dark:text-amber-400">🔧 Improvements</p><p className="text-sm text-zinc-700 dark:text-zinc-300 whitespace-pre-wrap">{r.improvements}</p></div>}
+                {r.feedback && <div className="mt-2"><p className="text-xs font-semibold text-zinc-500">💬 Overall</p><p className="text-sm text-zinc-700 dark:text-zinc-300 whitespace-pre-wrap">{r.feedback}</p></div>}
+                {r.resources && <div className="mt-2"><p className="text-xs font-semibold text-indigo-500">🔗 Resources</p><p className="text-sm text-zinc-700 dark:text-zinc-300 whitespace-pre-wrap">{r.resources}</p></div>}
               </li>
             ))}
           </ul>

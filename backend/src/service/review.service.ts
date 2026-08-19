@@ -31,6 +31,9 @@ class ReviewService {
         reviewerId,
         submissionId,
         feedback: input.feedback,
+        strengths: input.strengths,
+        improvements: input.improvements,
+        resources: input.resources,
         ratings: input.ratings,
       });
     } catch (error) {

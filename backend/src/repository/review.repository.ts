@@ -4,6 +4,9 @@ import { KARMA_PER_REVIEW } from "../config/constants.js";
 const reviewSelect = {
   id: true,
   feedback: true,
+  strengths: true,
+  improvements: true,
+  resources: true,
   createdAt: true,
   submissionId: true,
   reviewerId: true,
@@ -14,6 +17,9 @@ interface CreateWithKarmaInput {
   reviewerId: number;
   submissionId: number;
   feedback: string;
+  strengths: string;
+  improvements: string;
+  resources?: string;
   ratings: { criterionId: number; rating: number }[];
 }
 
@@ -23,6 +29,9 @@ class ReviewRepository {
       const review = await tx.review.create({
         data: {
           feedback: input.feedback,
+          strengths: input.strengths,
+          improvements: input.improvements,
+          resources: input.resources ?? null,
           reviewer: { connect: { id: input.reviewerId } },
           submission: { connect: { id: input.submissionId } },
           ratings: {
