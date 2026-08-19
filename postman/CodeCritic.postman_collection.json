@@ -148,7 +148,77 @@
     {
       "name": "Feed",
       "description": "Feed routes. Populated by Member C (C-05, C-06).",
-      "item": []
+      "item": [
+        {
+          "name": "GET /api/feed",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/feed?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "feed"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/feed (filtered)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/feed?search=react&technologies=react,typescript&page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "feed"],
+              "query": [
+                { "key": "search", "value": "react" },
+                { "key": "technologies", "value": "react,typescript" },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/feed/personalized",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/feed/personalized?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "feed", "personalized"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/feed/personalized (debug)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/feed/personalized?page=1&limit=20&debug=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "feed", "personalized"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" },
+                { "key": "debug", "value": "1" }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
     }
   ]
 }
