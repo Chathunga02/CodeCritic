@@ -10,6 +10,7 @@ interface UserProfile {
   id: number; username: string; bio: string | null;
   githubUrl: string | null; karma: number; createdAt: string;
   technologies: Technology[];
+  _count: { reviews: number; submissions: number };
 }
 
 export default function MePage() {
@@ -54,9 +55,25 @@ export default function MePage() {
         </div>
       )}
 
+      <div className="mt-6 flex gap-6">
+        <div className="text-center">
+          <p className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">{profile._count.reviews}</p>
+          <p className="text-xs text-zinc-500">Reviews given</p>
+        </div>
+        <div className="text-center">
+          <p className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">{profile._count.submissions}</p>
+          <p className="text-xs text-zinc-500">Submissions</p>
+        </div>
+        <div className="text-center">
+          <p className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">{profile.karma}</p>
+          <p className="text-xs text-zinc-500">Karma</p>
+        </div>
+      </div>
+
       <div className="mt-8 flex flex-wrap gap-3">
         <Link href="/settings" className="rounded-full bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">Edit profile</Link>
         <Link href="/me/requests" className="rounded-full border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300">My submissions</Link>
+        <Link href="/me/reviews" className="rounded-full border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300">Reviews given</Link>
         <Link href="/me/reviews-received" className="rounded-full border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300">Reviews received</Link>
       </div>
     </div>

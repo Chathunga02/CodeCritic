@@ -9,6 +9,7 @@ interface PublicProfile {
   id: number; username: string; bio: string | null;
   githubUrl: string | null; karma: number; createdAt: string;
   technologies: Technology[];
+  _count: { reviews: number; submissions: number };
 }
 
 export default function ProfilePage() {
@@ -54,7 +55,22 @@ export default function ProfilePage() {
         </div>
       )}
 
-      <p className="mt-6 text-xs text-zinc-400">
+      <div className="mt-6 flex gap-6">
+        <div className="text-center">
+          <p className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">{profile._count.reviews}</p>
+          <p className="text-xs text-zinc-500">Reviews given</p>
+        </div>
+        <div className="text-center">
+          <p className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">{profile._count.submissions}</p>
+          <p className="text-xs text-zinc-500">Submissions</p>
+        </div>
+        <div className="text-center">
+          <p className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">{profile.karma}</p>
+          <p className="text-xs text-zinc-500">Karma</p>
+        </div>
+      </div>
+
+      <p className="mt-4 text-xs text-zinc-400">
         Member since {new Date(profile.createdAt).toLocaleDateString()}
       </p>
     </div>

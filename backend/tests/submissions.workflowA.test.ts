@@ -10,7 +10,7 @@ describe("Workflow A: POST /api/submissions", () => {
 
     const res = await request(app)
       .post("/api/submissions")
-      .set("Authorization", `Bearer ${token}`)
+      .set("x-test-clerk-user-id", token)
       .send({
         title: "React Dashboard",
         description: "A dashboard built with React for tracking analytics.",
@@ -44,7 +44,7 @@ describe("Workflow A: POST /api/submissions", () => {
 
     const res = await request(app)
       .post("/api/submissions")
-      .set("Authorization", `Bearer ${token}`)
+      .set("x-test-clerk-user-id", token)
       .send({
         description: "Missing the title field entirely.",
         githubUrl: "https://github.com/someuser/missing-title",
@@ -61,7 +61,7 @@ describe("Workflow A: POST /api/submissions", () => {
 
     const res = await request(app)
       .post("/api/submissions")
-      .set("Authorization", `Bearer ${token}`)
+      .set("x-test-clerk-user-id", token)
       .send({
         title: "Trying to spoof identity",
         description: "This request illegally includes an authorId field.",
@@ -113,7 +113,7 @@ describe("Workflow A2: PUT /api/submissions/:id", () => {
 
     const res = await request(app)
       .put(`/api/submissions/${submission.id}`)
-      .set("Authorization", `Bearer ${authorToken}`)
+      .set("x-test-clerk-user-id", authorToken)
       .send({
         title: "Updated title",
         description: "Updated description after initial feedback from reviewers.",
@@ -135,7 +135,7 @@ describe("Workflow A2: PUT /api/submissions/:id", () => {
 
     const res = await request(app)
       .put(`/api/submissions/${submission.id}`)
-      .set("Authorization", `Bearer ${reviewerToken}`)
+      .set("x-test-clerk-user-id", reviewerToken)
       .send({
         title: "Hijacked",
         description: "This edit should be rejected since the reviewer does not own it.",
@@ -152,7 +152,7 @@ describe("Workflow A2: PUT /api/submissions/:id", () => {
 
     const res = await request(app)
       .put("/api/submissions/999999999")
-      .set("Authorization", `Bearer ${authorToken}`)
+      .set("x-test-clerk-user-id", authorToken)
       .send({
         title: "Does not matter",
         description: "The submission this targets does not exist.",
@@ -170,7 +170,7 @@ describe("Workflow A2: PUT /api/submissions/:id", () => {
 
     const res = await request(app)
       .put(`/api/submissions/${submission.id}`)
-      .set("Authorization", `Bearer ${authorToken}`)
+      .set("x-test-clerk-user-id", authorToken)
       .send({
         title: "Trying to sneak criteria in",
         description: "This request illegally includes a criteria key.",
@@ -191,7 +191,7 @@ describe("no DELETE surface for submissions (INV-4)", () => {
 
     const res = await request(app)
       .delete(`/api/submissions/${submission.id}`)
-      .set("Authorization", `Bearer ${authorToken}`);
+      .set("x-test-clerk-user-id", authorToken);
 
     expect(res.status).toBe(404);
     expect(res.body.error.code).toBe("NOT_FOUND");
