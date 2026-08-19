@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams, useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
 import { api } from "@/services/api";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { updateSubmissionFormSchema, type UpdateSubmissionFormValues } from "@/schemas/submission.schema";
 import TechnologyMultiSelect from "@/components/submissions/TechnologyMultiSelect";
 import type { Submission, SubmissionDetail } from "@/types/submission";
@@ -77,6 +78,7 @@ export default function EditSubmissionPage() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
+      <Breadcrumbs items={[{ label: submission.title, href: `/submissions/${submission.id}` }, { label: "Edit" }]} />
       <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">Edit submission</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-5" noValidate>

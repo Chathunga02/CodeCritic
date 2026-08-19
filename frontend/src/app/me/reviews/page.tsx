@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuthStore } from "@/store/authStore";
 import { api } from "@/services/api";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 interface Review {
   id: number;
@@ -37,6 +38,7 @@ export default function MyReviewsPage() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
+      <Breadcrumbs items={[{ label: "My Profile", href: "/me" }, { label: "Reviews Given" }]} />
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">Reviews I&apos;ve given</h1>
         {meta && <span className="text-sm text-zinc-400">{meta.total} total</span>}

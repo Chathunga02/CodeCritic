@@ -7,6 +7,7 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
 import { api } from "@/services/api";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 const settingsSchema = z.object({
   username: z.string().min(3, "At least 3 characters").max(30, "At most 30 characters")
@@ -56,6 +57,7 @@ export default function SettingsPage() {
 
   return (
     <div className="mx-auto max-w-lg px-4 py-10">
+      <Breadcrumbs items={[{ label: "My Profile", href: "/me" }, { label: "Settings" }]} />
       <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">Profile settings</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-5" noValidate>
         <div>

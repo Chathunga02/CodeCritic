@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
 import { api } from "@/services/api";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { createSubmissionFormSchema, type CreateSubmissionFormValues } from "@/schemas/submission.schema";
 import TechnologyMultiSelect from "@/components/submissions/TechnologyMultiSelect";
 import type { Submission } from "@/types/submission";
@@ -56,6 +57,7 @@ export default function NewSubmissionPage() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
+      <Breadcrumbs items={[{ label: "New Submission" }]} />
       <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">Post a review request</h1>
       <p className="mt-1 text-sm text-zinc-500">
         Share your repo and the criteria you want feedback on. Criteria are locked once you post, you won&apos;t be

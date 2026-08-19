@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
 import { useAuthStore } from "@/store/authStore";
 import { api } from "@/services/api";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 interface Technology { id: number; name: string; }
 interface UserProfile {
@@ -140,6 +141,7 @@ export default function MePage() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
+      <Breadcrumbs items={[{ label: "My Profile" }]} />
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-[320px_minmax(0,1fr)]">
         {/* Left column: identity */}
         <div className="flex flex-col gap-8">

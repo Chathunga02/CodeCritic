@@ -49,16 +49,14 @@ export default function Home() {
       }
       try {
         const params = new URLSearchParams();
-        if (search) params.append('search', search);
+        if (search) params.append("search", search);
         // We'll append debug=1 in dev so we can see scores in the demo
-        if (process.env.NODE_ENV !== 'production') {
-           params.append('debug', '1');
+        if (process.env.NODE_ENV !== "production") {
+          params.append("debug", "1");
         }
 
         const queryString = params.toString();
-        const endpoint = useRecommended
-          ? `/feed/personalized?${queryString}`
-          : `/feed?${queryString}`;
+        const endpoint = useRecommended ? `/feed/personalized?${queryString}` : `/feed?${queryString}`;
 
         const res = await api.get<FeedSubmission[]>(endpoint);
 
@@ -75,7 +73,9 @@ export default function Home() {
 
     fetchFeed();
 
-    return () => { isMounted = false; };
+    return () => {
+      isMounted = false;
+    };
   }, [isLoaded, userId, search, mode]);
 
   const showHero = isLoaded && !userId;
@@ -85,18 +85,18 @@ export default function Home() {
       {showHero && (
         <div className="text-center">
           <h1 className="text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-5xl">
-            Get your code{" "}
-            <span className="text-indigo-600">reviewed</span>
+            Get your code <span className="text-indigo-600">reviewed</span>
             <br />
             by real developers.
           </h1>
-          <p className="mx-auto mt-4 max-w-xl text-base text-zinc-600 dark:text-zinc-400">
-            CodeCritic is a peer review platform where developers share their work,
-            give honest feedback, and earn karma for helping others grow.
-          </p>
+          <p className="mx-auto mt-4 max-w-xl text-base text-zinc-600 dark:text-zinc-400">CodeCritic is a peer review platform where developers share their work, give honest feedback, and earn karma for helping others grow.</p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Link href="/sign-up" className="bg-indigo-600 px-6 py-2.5 text-sm font-medium text-white hover:bg-indigo-700">Get started free</Link>
-            <Link href="/sign-in" className="border border-zinc-300 px-6 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300">Sign in</Link>
+            <Link href="/sign-up" className="bg-indigo-600 px-6 py-2.5 text-sm font-medium text-white hover:bg-indigo-700">
+              Get started free
+            </Link>
+            <Link href="/sign-in" className="border border-zinc-300 px-6 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300">
+              Sign in
+            </Link>
           </div>
         </div>
       )}
@@ -114,7 +114,10 @@ export default function Home() {
               <div className="border border-zinc-200 bg-zinc-50 p-12 text-center dark:border-zinc-800 dark:bg-zinc-900/50">
                 <h3 className="text-sm font-medium text-zinc-900 dark:text-zinc-100">Sign in for recommendations</h3>
                 <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-                  <Link href="/sign-in" className="text-indigo-600 underline">Sign in</Link> to see submissions matched to your tech stack.
+                  <Link href="/sign-in" className="text-indigo-600 underline">
+                    Sign in
+                  </Link>{" "}
+                  to see submissions matched to your tech stack.
                 </p>
               </div>
             ) : loading ? (
@@ -124,15 +127,11 @@ export default function Home() {
                 ))}
               </div>
             ) : error ? (
-              <div className="border border-red-200 bg-red-50 p-6 text-center text-red-600 dark:border-red-900/50 dark:bg-red-950/20 dark:text-red-400">
-                {error}
-              </div>
+              <div className="border border-red-200 bg-red-50 p-6 text-center text-red-600 dark:border-red-900/50 dark:bg-red-950/20 dark:text-red-400">{error}</div>
             ) : feedData.length === 0 ? (
               <div className="border border-zinc-200 bg-zinc-50 p-12 text-center dark:border-zinc-800 dark:bg-zinc-900/50">
                 <h3 className="text-sm font-medium text-zinc-900 dark:text-zinc-100">No submissions found</h3>
-                <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-                  Try adjusting your search or filters to find what you&apos;re looking for.
-                </p>
+                <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">Try adjusting your search or filters to find what you&apos;re looking for.</p>
               </div>
             ) : (
               <div className="space-y-4">
@@ -143,9 +142,7 @@ export default function Home() {
             )}
           </div>
 
-          <aside className="hidden lg:block">
-            {userId && <TrendingSidebar />}
-          </aside>
+          <aside className="hidden lg:block">{userId && <TrendingSidebar />}</aside>
         </div>
       </div>
 

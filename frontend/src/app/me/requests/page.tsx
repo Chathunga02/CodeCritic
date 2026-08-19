@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuthStore } from "@/store/authStore";
 import { api } from "@/services/api";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 interface Technology { id: number; name: string; }
 interface Submission {
@@ -33,6 +34,7 @@ export default function MyRequestsPage() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
+      <Breadcrumbs items={[{ label: "My Profile", href: "/me" }, { label: "My Submissions" }]} />
       <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">My submissions</h1>
 
       {submissions.length === 0 ? (

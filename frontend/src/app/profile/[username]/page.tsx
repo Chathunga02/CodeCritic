@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { api } from "@/services/api";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 interface Technology { id: number; name: string; }
 interface PublicProfile {
@@ -29,6 +30,7 @@ export default function ProfilePage() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
+      <Breadcrumbs items={[{ label: `@${profile.username}` }]} />
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">{profile.username}</h1>

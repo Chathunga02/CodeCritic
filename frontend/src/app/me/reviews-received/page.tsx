@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuthStore } from "@/store/authStore";
 import { api } from "@/services/api";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 interface Review {
   id: number; feedback: string; createdAt: string;
@@ -32,6 +33,7 @@ export default function ReviewsReceivedPage() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
+      <Breadcrumbs items={[{ label: "My Profile", href: "/me" }, { label: "Reviews Received" }]} />
       <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">Reviews received</h1>
 
       {reviews.length === 0 ? (
