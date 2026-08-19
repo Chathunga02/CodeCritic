@@ -51,7 +51,7 @@ export default function EditSubmissionPage() {
   if (!isLoaded || !submission) return <div className="p-8 text-sm text-zinc-500">Loading…</div>;
 
   // proxy.ts doesn't gate this route (only /submissions/new, /me, /settings
-  // are in its matcher), so ownership is a UX check here — the API's 404
+  // are in its matcher), so ownership is a UX check here, the API's 404
   // then 403 ordering (AUTH §3) is the real guard if someone reaches it anyway.
   if (!userId) {
     router.push("/sign-in");
@@ -115,7 +115,7 @@ export default function EditSubmissionPage() {
           </label>
           <p className="mt-1 text-xs text-zinc-400">
             Criteria are fixed the moment a submission is posted, so reviewers are always rating the same fixed
-            scale — they can&apos;t be added, edited, or removed here.
+            scale, they can&apos;t be added, edited, or removed here.
           </p>
           <ul className="mt-2 space-y-1">
             {submission.criteria.map((c) => (

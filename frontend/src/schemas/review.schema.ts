@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 // Thin, UX-level schema for the review form (D-02, D-22). Mirrors
-// backend/src/models/review.model.ts but stays advisory only — the API
+// backend/src/models/review.model.ts but stays advisory only, the API
 // re-enforces everything (self-review, criteria mismatch, duplicates).
 
 export const reviewFormSchema = z.object({

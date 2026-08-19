@@ -9,7 +9,7 @@ import { reviewFormSchema, type ReviewFormValues } from "@/schemas/review.schema
 import type { Criterion, ReviewResult } from "@/types/submission";
 
 // B-12: the review form itself. Karma badge component belongs to Member A
-// (TEAM_SCOPE_B §3) — this only calls the `updateKarma` action she provides
+// (TEAM_SCOPE_B §3), this only calls the `updateKarma` action she provides
 // with the new total from the Workflow B response payload (BLUEPRINT §5).
 
 interface ReviewFormProps {
@@ -39,7 +39,7 @@ export default function ReviewForm({ submissionId, criteria, onSubmitted }: Revi
     setApiError(null);
     try {
       const { data } = await api.post<ReviewResult>(`/submissions/${submissionId}/reviews`, values);
-      // Reviews are immutable (D-15) — this form only ever fires once per
+      // Reviews are immutable (D-15), this form only ever fires once per
       // submission per user; the API's DB-unique constraint is the real guard.
       updateKarma(data.reviewerKarma);
       onSubmitted(data);
@@ -51,7 +51,7 @@ export default function ReviewForm({ submissionId, criteria, onSubmitted }: Revi
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
       <p className="text-xs text-zinc-400">
-        Reviews can&apos;t be edited or deleted once submitted — take a moment before sending this.
+        Reviews can&apos;t be edited or deleted once submitted, take a moment before sending this.
       </p>
 
       <div className="space-y-3">

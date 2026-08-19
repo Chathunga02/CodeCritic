@@ -36,7 +36,7 @@ export default function NewSubmissionPage() {
 
   const { fields, append, remove } = useFieldArray({ control, name: "criteria" });
 
-  // Auth gating is UX only — proxy.ts already protects this route (AUTH §5),
+  // Auth gating is UX only, proxy.ts already protects this route (AUTH §5),
   // the API enforces requireAuth again regardless.
   if (!isLoaded) return <div className="p-8 text-sm text-zinc-500">Loading…</div>;
   if (!userId) {
@@ -58,7 +58,7 @@ export default function NewSubmissionPage() {
     <div className="mx-auto max-w-2xl px-4 py-10">
       <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">Post a review request</h1>
       <p className="mt-1 text-sm text-zinc-500">
-        Share your repo and the criteria you want feedback on. Criteria are locked once you post — you won&apos;t be
+        Share your repo and the criteria you want feedback on. Criteria are locked once you post, you won&apos;t be
         able to add, edit, or remove them later.
       </p>
 
@@ -100,7 +100,7 @@ export default function NewSubmissionPage() {
         <div>
           <div className="flex items-center justify-between">
             <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
-              Review criteria <span className="text-zinc-400">(1–5, locked after posting)</span>
+              Review criteria <span className="text-zinc-400">(1 to 5, locked after posting)</span>
             </label>
             <button
               type="button"

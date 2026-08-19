@@ -5,7 +5,7 @@ import { api } from "@/services/api";
 import type { Technology } from "@/types/submission";
 
 // Consumes Member A's GET /technologies route (public, no auth). Never
-// reimplemented here — this component only reads the list (TEAM_SCOPE_B §3).
+// reimplemented here, this component only reads the list (TEAM_SCOPE_B §3).
 interface TechnologyMultiSelectProps {
   value: string[];
   onChange: (next: string[]) => void;

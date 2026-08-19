@@ -152,7 +152,7 @@ router.get(
   }),
 );
 
-// Public — no auth. Must be last.
+// Public, no auth. Must be last.
 router.get("/:username", userController.getByUsername);
 
 export default router;

@@ -32,7 +32,7 @@ export default function SubmissionDetailPage() {
   const hasReviewed = isLoaded && submission.reviews.some((r) => r.reviewer.id === userId);
 
   const handleReviewSubmitted = (review: ReviewResult) => {
-    setToast("Review submitted — thanks for the feedback.");
+    setToast("Review submitted, thanks for the feedback.");
     setSubmission((prev) =>
       prev
         ? {
@@ -136,7 +136,7 @@ export default function SubmissionDetailPage() {
           </p>
         ) : isOwner ? (
           <p className="mt-3 bg-zinc-50 px-3 py-2 text-sm text-zinc-500 dark:bg-zinc-900">
-            This is your own submission — you can&apos;t review it.
+            This is your own submission, you can&apos;t review it.
           </p>
         ) : hasReviewed ? (
           <p className="mt-3 bg-zinc-50 px-3 py-2 text-sm text-zinc-500 dark:bg-zinc-900">
