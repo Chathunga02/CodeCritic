@@ -41,11 +41,11 @@ export default function TechnologyMultiSelect({ value, onChange, error }: Techno
 
   return (
     <div>
-      <div className="flex flex-wrap gap-2 rounded-lg border border-zinc-300 bg-white px-3 py-2 focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500 dark:border-zinc-700 dark:bg-zinc-900">
+      <div className="flex flex-wrap gap-2 border border-zinc-300 bg-white px-3 py-2 focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500 dark:border-zinc-700 dark:bg-zinc-900">
         {value.map((tag) => (
           <span
             key={tag}
-            className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300"
+            className="inline-flex items-center gap-1 bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300"
           >
             {tag}
             <button
@@ -81,7 +81,7 @@ export default function TechnologyMultiSelect({ value, onChange, error }: Techno
               key={name}
               type="button"
               onClick={() => addTag(name)}
-              className="rounded-full border border-zinc-200 px-2.5 py-0.5 text-xs text-zinc-600 hover:border-indigo-300 hover:text-indigo-700 dark:border-zinc-700 dark:text-zinc-400"
+              className=" border border-zinc-200 px-2.5 py-0.5 text-xs text-zinc-600 hover:border-indigo-300 hover:text-indigo-700 dark:border-zinc-700 dark:text-zinc-400"
             >
               + {name}
             </button>

@@ -48,7 +48,7 @@ export default function ProfilePage() {
       {profile.technologies.length > 0 && (
         <div className="mt-4 flex flex-wrap gap-2">
           {profile.technologies.map((t) => (
-            <span key={t.id} className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+            <span key={t.id} className=" bg-zinc-100 px-2.5 py-0.5 text-xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
               {t.name}
             </span>
           ))}

@@ -98,7 +98,14 @@ router.get(
           id: true,
           feedback: true,
           createdAt: true,
-          submission: { select: { id: true, title: true } },
+          submission: {
+            select: {
+              id: true,
+              title: true,
+              description: true,
+              technologies: { select: { id: true, name: true } },
+            },
+          },
         },
         orderBy: { createdAt: "desc" },
         skip,

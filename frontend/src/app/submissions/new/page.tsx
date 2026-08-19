@@ -11,7 +11,7 @@ import TechnologyMultiSelect from "@/components/submissions/TechnologyMultiSelec
 import type { Submission } from "@/types/submission";
 
 const inputClass =
-  "mt-1 block w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50";
+  "mt-1 block w-full border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50";
 
 export default function NewSubmissionPage() {
   const router = useRouter();
@@ -141,21 +141,21 @@ export default function NewSubmissionPage() {
         </div>
 
         {apiError && (
-          <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600 dark:bg-red-950 dark:text-red-400">{apiError}</p>
+          <p className=" bg-red-50 px-3 py-2 text-sm text-red-600 dark:bg-red-950 dark:text-red-400">{apiError}</p>
         )}
 
         <div className="flex gap-3">
           <button
             type="submit"
             disabled={isSubmitting}
-            className="rounded-full bg-indigo-600 px-5 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+            className=" bg-indigo-600 px-5 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
           >
             {isSubmitting ? "Posting…" : "Post request"}
           </button>
           <button
             type="button"
             onClick={() => router.push("/")}
-            className="rounded-full border border-zinc-300 px-5 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300"
+            className=" border border-zinc-300 px-5 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300"
           >
             Cancel
           </button>

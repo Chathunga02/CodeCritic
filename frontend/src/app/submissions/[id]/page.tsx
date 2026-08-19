@@ -67,7 +67,7 @@ export default function SubmissionDetailPage() {
           </p>
         </div>
         <span
-          className={`shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium ${
+          className={`shrink-0 px-2.5 py-0.5 text-xs font-medium ${
             submission.status === "PENDING"
               ? "bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300"
               : "bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300"
@@ -79,7 +79,7 @@ export default function SubmissionDetailPage() {
 
       <div className="mt-3 flex flex-wrap gap-1.5">
         {submission.technologies.map((t) => (
-          <span key={t.id} className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+          <span key={t.id} className=" bg-zinc-100 px-2.5 py-0.5 text-xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
             {t.name}
           </span>
         ))}
@@ -100,7 +100,7 @@ export default function SubmissionDetailPage() {
         <div className="mt-4">
           <Link
             href={`/submissions/${submission.id}/edit`}
-            className="rounded-full border border-zinc-300 px-4 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300"
+            className=" border border-zinc-300 px-4 py-1.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300"
           >
             Edit submission
           </Link>
@@ -124,7 +124,7 @@ export default function SubmissionDetailPage() {
         <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">Leave a review</h2>
 
         {toast && (
-          <p className="mt-2 rounded-lg bg-green-50 px-3 py-2 text-sm text-green-600 dark:bg-green-950 dark:text-green-400">{toast}</p>
+          <p className="mt-2 bg-green-50 px-3 py-2 text-sm text-green-600 dark:bg-green-950 dark:text-green-400">{toast}</p>
         )}
 
         {!isLoaded ? null : !userId ? (
@@ -135,11 +135,11 @@ export default function SubmissionDetailPage() {
             to leave a review.
           </p>
         ) : isOwner ? (
-          <p className="mt-3 rounded-lg bg-zinc-50 px-3 py-2 text-sm text-zinc-500 dark:bg-zinc-900">
+          <p className="mt-3 bg-zinc-50 px-3 py-2 text-sm text-zinc-500 dark:bg-zinc-900">
             This is your own submission — you can&apos;t review it.
           </p>
         ) : hasReviewed ? (
-          <p className="mt-3 rounded-lg bg-zinc-50 px-3 py-2 text-sm text-zinc-500 dark:bg-zinc-900">
+          <p className="mt-3 bg-zinc-50 px-3 py-2 text-sm text-zinc-500 dark:bg-zinc-900">
             You&apos;ve already reviewed this submission.
           </p>
         ) : (
@@ -159,7 +159,7 @@ export default function SubmissionDetailPage() {
         ) : (
           <ul className="mt-3 space-y-4">
             {submission.reviews.map((r) => (
-              <li key={r.id} className="rounded-2xl border border-zinc-200 p-4 dark:border-zinc-800">
+              <li key={r.id} className=" border border-zinc-200 p-4 dark:border-zinc-800">
                 <div className="flex items-center justify-between">
                   <Link href={`/profile/${r.reviewer.username}`} className="text-sm font-medium text-zinc-900 hover:text-indigo-600 dark:text-zinc-50">
                     @{r.reviewer.username}
@@ -170,7 +170,7 @@ export default function SubmissionDetailPage() {
                   {r.ratings.map((rating) => {
                     const criterion = submission.criteria.find((c) => c.id === rating.criterionId);
                     return (
-                      <span key={rating.criterionId} className="rounded-full bg-indigo-50 px-2 py-0.5 text-xs text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
+                      <span key={rating.criterionId} className=" bg-indigo-50 px-2 py-0.5 text-xs text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
                         {criterion?.label ?? "Criterion"}: {rating.rating}/5
                       </span>
                     );

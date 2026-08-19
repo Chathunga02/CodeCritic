@@ -64,10 +64,10 @@ export default function ReviewsReceivedPage() {
       {meta && meta.totalPages > 1 && (
         <div className="mt-6 flex gap-3">
           <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}
-            className="rounded-full border border-zinc-300 px-4 py-1.5 text-sm disabled:opacity-40 dark:border-zinc-700">Previous</button>
+            className=" border border-zinc-300 px-4 py-1.5 text-sm disabled:opacity-40 dark:border-zinc-700">Previous</button>
           <span className="py-1.5 text-sm text-zinc-500">{page} / {meta.totalPages}</span>
           <button onClick={() => setPage((p) => Math.min(meta.totalPages, p + 1))} disabled={page === meta.totalPages}
-            className="rounded-full border border-zinc-300 px-4 py-1.5 text-sm disabled:opacity-40 dark:border-zinc-700">Next</button>
+            className=" border border-zinc-300 px-4 py-1.5 text-sm disabled:opacity-40 dark:border-zinc-700">Next</button>
         </div>
       )}
     </div>

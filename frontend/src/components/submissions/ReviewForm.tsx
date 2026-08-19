@@ -69,7 +69,7 @@ export default function ReviewForm({ submissionId, criteria, onSubmitted }: Revi
                       type="button"
                       onClick={() => field.onChange(n)}
                       aria-label={`Rate ${criterion.label} ${n} out of 5`}
-                      className={`h-8 w-8 rounded-full text-sm font-medium transition-colors ${
+                      className={`h-8 w-8 text-sm font-medium transition-colors ${
                         field.value >= n
                           ? "bg-indigo-600 text-white"
                           : "bg-zinc-100 text-zinc-400 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-500"
@@ -93,20 +93,20 @@ export default function ReviewForm({ submissionId, criteria, onSubmitted }: Revi
         <textarea
           {...register("feedback")}
           rows={4}
-          className="mt-1 block w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+          className="mt-1 block w-full border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
           placeholder="What worked, what didn't, and what you'd change (min. 10 characters)"
         />
         {errors.feedback && <p className="mt-1 text-xs text-red-500">{errors.feedback.message}</p>}
       </div>
 
       {apiError && (
-        <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600 dark:bg-red-950 dark:text-red-400">{apiError}</p>
+        <p className=" bg-red-50 px-3 py-2 text-sm text-red-600 dark:bg-red-950 dark:text-red-400">{apiError}</p>
       )}
 
       <button
         type="submit"
         disabled={isSubmitting}
-        className="rounded-full bg-indigo-600 px-5 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+        className=" bg-indigo-600 px-5 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
       >
         {isSubmitting ? "Submitting…" : "Submit review"}
       </button>

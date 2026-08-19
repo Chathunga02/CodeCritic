@@ -11,6 +11,8 @@ const router = Router();
 
 router.post("/", requireAuth, writeLimiter, validate(createSubmissionSchema), submissionController.create);
 
+router.get("/me/trending-reviewed", requireAuth, submissionController.getTrendingReviewed);
+
 router.get("/:id", validate(getSubmissionSchema), submissionController.getById);
 
 router.put("/:id", requireAuth, writeLimiter, validate(updateSubmissionSchema), submissionController.update);

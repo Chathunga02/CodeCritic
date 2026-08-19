@@ -113,6 +113,20 @@ class SubmissionRepository {
       },
     });
   }
+
+  findReviewedByUserRankedByReviewCount(userId: number, take: number) {
+    return prisma.submission.findMany({
+      where: { reviews: { some: { reviewerId: userId } } },
+      select: {
+        id: true,
+        title: true,
+        createdAt: true,
+        _count: { select: { reviews: true } },
+      },
+      orderBy: [{ reviews: { _count: "desc" } }, { createdAt: "desc" }],
+      take,
+    });
+  }
 }
 
 export default new SubmissionRepository();

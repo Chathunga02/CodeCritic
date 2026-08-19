@@ -51,11 +51,11 @@ export default function MyRequestsPage() {
                   </Link>
                   <div className="mt-1 flex flex-wrap gap-1">
                     {s.technologies.map((t) => (
-                      <span key={t.id} className="rounded-full bg-zinc-100 px-2 py-0.5 text-xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">{t.name}</span>
+                      <span key={t.id} className=" bg-zinc-100 px-2 py-0.5 text-xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">{t.name}</span>
                     ))}
                   </div>
                 </div>
-                <span className={`shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium ${s._count.reviews === 0 ? "bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300" : "bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300"}`}>
+                <span className={`shrink-0 px-2.5 py-0.5 text-xs font-medium ${s._count.reviews === 0 ? "bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300" : "bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300"}`}>
                   {s._count.reviews === 0 ? "Pending" : `${s._count.reviews} review${s._count.reviews > 1 ? "s" : ""}`}
                 </span>
               </div>
@@ -68,10 +68,10 @@ export default function MyRequestsPage() {
       {meta && meta.totalPages > 1 && (
         <div className="mt-6 flex gap-3">
           <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}
-            className="rounded-full border border-zinc-300 px-4 py-1.5 text-sm disabled:opacity-40 dark:border-zinc-700">Previous</button>
+            className=" border border-zinc-300 px-4 py-1.5 text-sm disabled:opacity-40 dark:border-zinc-700">Previous</button>
           <span className="py-1.5 text-sm text-zinc-500">{page} / {meta.totalPages}</span>
           <button onClick={() => setPage((p) => Math.min(meta.totalPages, p + 1))} disabled={page === meta.totalPages}
-            className="rounded-full border border-zinc-300 px-4 py-1.5 text-sm disabled:opacity-40 dark:border-zinc-700">Next</button>
+            className=" border border-zinc-300 px-4 py-1.5 text-sm disabled:opacity-40 dark:border-zinc-700">Next</button>
         </div>
       )}
     </div>
