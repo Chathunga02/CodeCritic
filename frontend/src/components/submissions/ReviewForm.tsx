@@ -22,15 +22,13 @@ export default function ReviewForm({ submissionId, criteria, onSubmitted }: Revi
   const updateKarma = useAuthStore((s) => s.updateKarma);
   const [apiError, setApiError] = useState<string | null>(null);
 
-  const {
-    register,
-    control,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<ReviewFormValues>({
+  const { register, control, handleSubmit, formState: { errors, isSubmitting } } = useForm<ReviewFormValues>({
     resolver: zodResolver(reviewFormSchema),
     defaultValues: {
       feedback: "",
+      strengths: "",
+      improvements: "",
+      resources: "",
       ratings: criteria.map((c) => ({ criterionId: c.id, rating: 0 })),
     },
   });
@@ -58,9 +56,7 @@ export default function ReviewForm({ submissionId, criteria, onSubmitted }: Revi
         {criteria.map((criterion, index) => (
           <div key={criterion.id}>
             <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">{criterion.label}</label>
-            <Controller
-              control={control}
-              name={`ratings.${index}.rating` as const}
+            <Controller control={control} name={`ratings.${index}.rating` as const}
               render={({ field }) => (
                 <div className="mt-1 flex gap-1.5">
                   {[1, 2, 3, 4, 5].map((n) => (
@@ -79,11 +75,8 @@ export default function ReviewForm({ submissionId, criteria, onSubmitted }: Revi
                     </button>
                   ))}
                 </div>
-              )}
-            />
-            {errors.ratings?.[index]?.rating && (
-              <p className="mt-1 text-xs text-red-500">{errors.ratings[index]?.rating?.message}</p>
-            )}
+              )} />
+            {errors.ratings?.[index]?.rating && <p className="mt-1 text-xs text-red-500">{errors.ratings[index]?.rating?.message}</p>}
           </div>
         ))}
       </div>

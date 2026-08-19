@@ -62,6 +62,9 @@ model Criterion {
 model Review {
     id           Int      @id @default(autoincrement())
     feedback     String
+    strengths    String
+    improvements String
+    resources    String?  // optional links, comma-separated or markdown
     reviewerId   Int
     submissionId Int
     createdAt    DateTime @default(now())
