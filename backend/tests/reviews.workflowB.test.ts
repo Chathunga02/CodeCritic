@@ -60,8 +60,8 @@ describe("Workflow B: POST /api/submissions/:id/reviews", () => {
       .set("x-test-clerk-user-id", reviewerToken)
       .send({
         feedback: "Does not matter, target does not exist.",
-        strengths: "N/A",
-        improvements: "N/A",
+        strengths: "Nothing to say here.",
+        improvements: "Nothing to improve here.",
         ratings: [{ criterionId: 1, rating: 5 }],
       });
     expect(res.status).toBe(404);
@@ -149,8 +149,8 @@ describe("karma rollback (D-13, the atomic transaction)", () => {
         reviewerId,
         submissionId: submission.id,
         feedback: "This write should fail and roll back entirely.",
-        strengths: "N/A",
-        improvements: "N/A",
+        strengths: "Nothing relevant here.",
+        improvements: "Nothing relevant here.",
         ratings: [{ criterionId: 999999999, rating: 5 }],
       }),
     ).rejects.toThrow();
