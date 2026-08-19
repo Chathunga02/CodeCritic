@@ -12,7 +12,7 @@ describe("write rate limiting (D-19, D-10 429 row)", () => {
     for (let i = 0; i < limit + 1; i++) {
       lastResponse = await request(app)
         .post("/api/submissions")
-        .set("Authorization", `Bearer ${token}`)
+        .set("x-test-clerk-user-id", token)
         .send({
           title: `Rate limit probe ${i}`,
           description: "Fired repeatedly on purpose to exceed the write rate limit.",

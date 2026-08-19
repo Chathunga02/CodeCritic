@@ -1,7 +1,7 @@
 import prisma from "../config/prisma.js";
 import type { PatchMeBody } from "../models/user.model.js";
 
-const publicUserSelect = {
+export const publicUserSelect = {
   id: true,
   username: true,
   bio: true,
@@ -9,6 +9,7 @@ const publicUserSelect = {
   karma: true,
   createdAt: true,
   technologies: { select: { id: true, name: true } },
+  _count: { select: { reviews: true, submissions: true } },
 } as const;
 
 interface PaginationInput { page: number; limit: number; }

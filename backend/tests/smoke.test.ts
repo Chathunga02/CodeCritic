@@ -16,7 +16,7 @@ describe("smoke", () => {
 
     const res = await request(app)
       .post("/api/submissions")
-      .set("Authorization", `Bearer ${token}`)
+      .set("x-test-clerk-user-id", token)
       .send({
         title: "Smoke Test Submission",
         description: "Confirms the integration pipeline is wired correctly end to end.",

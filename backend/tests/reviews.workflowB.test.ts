@@ -19,18 +19,18 @@ describe("Workflow B: POST /api/submissions/:id/reviews", () => {
     const reviewerToken = await getReviewerToken();
     const submission = await createSubmission(authorToken);
 
-    const before = await request(app).get("/api/users/me").set("Authorization", `Bearer ${reviewerToken}`);
+    const before = await request(app).get("/api/users/me").set("x-test-clerk-user-id", reviewerToken);
     const karmaBefore = before.body.data.karma;
 
     const res = await request(app)
       .post(`/api/submissions/${submission.id}/reviews`)
-      .set("Authorization", `Bearer ${reviewerToken}`)
+      .set("x-test-clerk-user-id", reviewerToken)
       .send(await reviewPayload(submission));
 
     expect(res.status).toBe(201);
     expect(res.body.data.reviewerKarma).toBe(karmaBefore + 2);
 
-    const after = await request(app).get("/api/users/me").set("Authorization", `Bearer ${reviewerToken}`);
+    const after = await request(app).get("/api/users/me").set("x-test-clerk-user-id", reviewerToken);
     expect(after.body.data.karma).toBe(karmaBefore + 2);
   });
 
@@ -52,7 +52,7 @@ describe("Workflow B: POST /api/submissions/:id/reviews", () => {
 
     const res = await request(app)
       .post(`/api/submissions/${submission.id}/reviews`)
-      .set("Authorization", `Bearer ${authorToken}`)
+      .set("x-test-clerk-user-id", authorToken)
       .send(await reviewPayload(submission));
 
     expect(res.status).toBe(403);
@@ -64,7 +64,7 @@ describe("Workflow B: POST /api/submissions/:id/reviews", () => {
 
     const res = await request(app)
       .post("/api/submissions/999999999/reviews")
-      .set("Authorization", `Bearer ${reviewerToken}`)
+      .set("x-test-clerk-user-id", reviewerToken)
       .send({ feedback: "Does not matter, target does not exist.", ratings: [{ criterionId: 1, rating: 5 }] });
 
     expect(res.status).toBe(404);
@@ -79,7 +79,7 @@ describe("Workflow B: POST /api/submissions/:id/reviews", () => {
 
     const res = await request(app)
       .post(`/api/submissions/${submissionB.id}/reviews`)
-      .set("Authorization", `Bearer ${reviewerToken}`)
+      .set("x-test-clerk-user-id", reviewerToken)
       .send({
         feedback: "Rating submission B using a criterion id that belongs to submission A.",
         ratings: [{ criterionId: submissionA.criteria[0].id, rating: 3 }],
@@ -96,13 +96,13 @@ describe("Workflow B: POST /api/submissions/:id/reviews", () => {
 
     const first = await request(app)
       .post(`/api/submissions/${submission.id}/reviews`)
-      .set("Authorization", `Bearer ${reviewerToken}`)
+      .set("x-test-clerk-user-id", reviewerToken)
       .send(await reviewPayload(submission));
     expect(first.status).toBe(201);
 
     const second = await request(app)
       .post(`/api/submissions/${submission.id}/reviews`)
-      .set("Authorization", `Bearer ${reviewerToken}`)
+      .set("x-test-clerk-user-id", reviewerToken)
       .send(await reviewPayload(submission, { feedback: "Trying to review the same submission a second time." }));
 
     expect(second.status).toBe(409);
@@ -116,7 +116,7 @@ describe("Workflow B: POST /api/submissions/:id/reviews", () => {
 
     await request(app)
       .post(`/api/submissions/${submission.id}/reviews`)
-      .set("Authorization", `Bearer ${reviewerToken}`)
+      .set("x-test-clerk-user-id", reviewerToken)
       .send(await reviewPayload(submission));
 
     const detail = await request(app).get(`/api/submissions/${submission.id}`);
@@ -131,7 +131,7 @@ describe("no update or delete surface for reviews (INV-3, INV-4)", () => {
     const submission = await createSubmission(authorToken);
     const created = await request(app)
       .post(`/api/submissions/${submission.id}/reviews`)
-      .set("Authorization", `Bearer ${reviewerToken}`)
+      .set("x-test-clerk-user-id", reviewerToken)
       .send(await reviewPayload(submission));
     const reviewId = created.body.data.id;
 
@@ -153,7 +153,7 @@ describe("karma rollback (D-13, the atomic transaction)", () => {
     const reviewerToken = await getReviewerToken();
     const submission = await createSubmission(authorToken);
 
-    const reviewerBefore = await request(app).get("/api/users/me").set("Authorization", `Bearer ${reviewerToken}`);
+    const reviewerBefore = await request(app).get("/api/users/me").set("x-test-clerk-user-id", reviewerToken);
     const reviewerId = reviewerBefore.body.data.id;
     const karmaBefore = reviewerBefore.body.data.karma;
 
@@ -172,7 +172,7 @@ describe("karma rollback (D-13, the atomic transaction)", () => {
       }),
     ).rejects.toThrow();
 
-    const reviewerAfter = await request(app).get("/api/users/me").set("Authorization", `Bearer ${reviewerToken}`);
+    const reviewerAfter = await request(app).get("/api/users/me").set("x-test-clerk-user-id", reviewerToken);
     expect(reviewerAfter.body.data.karma).toBe(karmaBefore);
 
     const reviewCount = await prisma.review.count({ where: { reviewerId, submissionId: submission.id } });

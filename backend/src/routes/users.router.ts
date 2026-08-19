@@ -6,6 +6,7 @@ import { patchMeBodySchema } from "../models/user.model.js";
 import userController from "../controller/user.controller.js";
 import { catchAsync } from "../utils/catchAsync.js";
 import prisma from "../config/prisma.js";
+import { publicUserSelect } from "../repository/user.repository.js";
 
 const router = Router();
 
