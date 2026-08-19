@@ -1,13 +1,11 @@
 import { describe, expect, it } from "vitest";
 import request from "supertest";
 import app from "../src/app.js";
-import { getAuthorToken } from "./helpers/auth.js";
-
+import { getReviewerToken } from "./helpers/auth.js";
 describe("write rate limiting (D-19, D-10 429 row)", () => {
   it("429s in the envelope once the write limit is exceeded", async () => {
-    const token = await getAuthorToken();
+    const token = await getReviewerToken();
     const limit = Number(process.env.RATE_LIMIT_WRITE_TEST);
-
     let lastResponse;
     for (let i = 0; i < limit + 1; i++) {
       lastResponse = await request(app)
@@ -21,7 +19,6 @@ describe("write rate limiting (D-19, D-10 429 row)", () => {
           criteria: [{ label: "Code quality" }],
         });
     }
-
     expect(lastResponse!.status).toBe(429);
     expect(lastResponse!.body.error.code).toBe("RATE_LIMITED");
   });
