@@ -5,8 +5,9 @@ function authHeader() {
 export interface TestClerkUser { clerkId: string; }
 export async function createTestClerkUser(emailPrefix: string): Promise<TestClerkUser> {
   const email = `${emailPrefix}-${Date.now()}@codecritic-test.dev`;
+  const username = `${emailPrefix}${Date.now()}`.replace(/[^a-z0-9]/gi, "").slice(0, 15);
   const userRes = await fetch(`${CLERK_API}/users`, { method: "POST", headers: authHeader(),
-    body: JSON.stringify({ email_address: [email], password: "TestPassword123456!" }) });
+    body: JSON.stringify({ email_address: [email], password: "TestPassword123456!", username }) });
   if (!userRes.ok) throw new Error(`createUser failed: ${await userRes.text()}`);
   const { id: clerkId } = await userRes.json() as { id: string };
   return { clerkId };
