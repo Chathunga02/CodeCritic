@@ -66,6 +66,9 @@ export interface Submission {
 export interface ReviewResult {
   id: number;
   feedback: string;
+  strengths: string;
+  improvements: string;
+  resources?: string;
   createdAt: string;
   submissionId: number;
   reviewerId: number;
