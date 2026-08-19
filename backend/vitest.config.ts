@@ -6,6 +6,7 @@ config();
 export default defineConfig({
   test: {
     testTimeout: 30000,
+    fileParallelism: false,
     exclude: [
       "**/node_modules/**",
       "**/dist/**",
