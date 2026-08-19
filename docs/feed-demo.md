@@ -16,7 +16,7 @@ This artifact captures the in-memory scoring and reordering of the same seeded w
       "typescript",
       "zustand"
     ],
-    "_score": 0.999992235889344
+    "_score": 0.8919085142524599
   },
   {
     "id": 1,
@@ -27,7 +27,7 @@ This artifact captures the in-memory scoring and reordering of the same seeded w
       "nextjs",
       "typescript"
     ],
-    "_score": 0.999992235889344
+    "_score": 0.8919085137392623
   },
   {
     "id": 9,
@@ -37,7 +37,7 @@ This artifact captures the in-memory scoring and reordering of the same seeded w
       "react",
       "typescript"
     ],
-    "_score": 0.983154965459899
+    "_score": 0.8811375165034114
   },
   {
     "id": 13,
@@ -48,7 +48,7 @@ This artifact captures the in-memory scoring and reordering of the same seeded w
       "nextjs",
       "typescript"
     ],
-    "_score": 0.8190519973898929
+    "_score": 0.7761589441478396
   },
   {
     "id": 7,
@@ -59,7 +59,7 @@ This artifact captures the in-memory scoring and reordering of the same seeded w
       "typescript",
       "zustand"
     ],
-    "_score": 0.7595259986949464
+    "_score": 0.7380794720739198
   },
   {
     "id": 3,
@@ -69,7 +69,7 @@ This artifact captures the in-memory scoring and reordering of the same seeded w
       "react",
       "typescript"
     ],
-    "_score": 0.7047706620831851
+    "_score": 0.618984554962346
   },
   {
     "id": 12,
@@ -78,7 +78,7 @@ This artifact captures the in-memory scoring and reordering of the same seeded w
     "matchedTechnologies": [
       "react"
     ],
-    "_score": 0.499996117944672
+    "_score": 0.44595425686963114
   },
   {
     "id": 6,
@@ -87,56 +87,56 @@ This artifact captures the in-memory scoring and reordering of the same seeded w
     "matchedTechnologies": [
       "react"
     ],
-    "_score": 0.4690519973898929
+    "_score": 0.4261589441478396
   },
   {
     "id": 8,
     "title": "Postgres Query Optimizer CLI",
     "author": "bob_backend",
     "matchedTechnologies": [],
-    "_score": 0.29999223588934404
+    "_score": 0.19190851425245997
   },
   {
     "id": 2,
     "title": "Express REST API Starter",
     "author": "bob_backend",
     "matchedTechnologies": [],
-    "_score": 0.2831549654598991
+    "_score": 0.1811375165034115
   },
   {
     "id": 10,
     "title": "Python Data Pipeline",
     "author": "dave_pythonista",
     "matchedTechnologies": [],
-    "_score": 0.2381039954165185
+    "_score": 0.1523178882956793
   },
   {
     "id": 11,
     "title": "CI Pipeline with Docker",
     "author": "erin_devops",
     "matchedTechnologies": [],
-    "_score": 0.1889832664010064
+    "_score": 0.12089478805706802
   },
   {
     "id": 4,
     "title": "Django Blog Engine",
     "author": "dave_pythonista",
     "matchedTechnologies": [],
-    "_score": 0.1889832664010064
+    "_score": 0.12089478805706802
   },
   {
     "id": 5,
     "title": "Dockerized Microservice Template",
     "author": "erin_devops",
     "matchedTechnologies": [],
-    "_score": 0.14999611754355555
+    "_score": 0.09595425686963115
   },
   {
     "id": 14,
     "title": "Prisma Schema Design Sample",
     "author": "bob_backend",
     "matchedTechnologies": [],
-    "_score": 0.059525998694946444
+    "_score": 0.038079472073919825
   }
 ]
 ```
@@ -154,7 +154,7 @@ This artifact captures the in-memory scoring and reordering of the same seeded w
       "nodejs",
       "postgresql"
     ],
-    "_score": 0.9999922102178918
+    "_score": 0.8919085055280991
   },
   {
     "id": 2,
@@ -165,7 +165,7 @@ This artifact captures the in-memory scoring and reordering of the same seeded w
       "express",
       "postgresql"
     ],
-    "_score": 0.9831549412292746
+    "_score": 0.8811375087531055
   },
   {
     "id": 14,
@@ -176,7 +176,7 @@ This artifact captures the in-memory scoring and reordering of the same seeded w
       "postgresql",
       "prisma"
     ],
-    "_score": 0.7595259937602683
+    "_score": 0.7380794704446186
   },
   {
     "id": 10,
@@ -185,7 +185,7 @@ This artifact captures the in-memory scoring and reordering of the same seeded w
     "matchedTechnologies": [
       "postgresql"
     ],
-    "_score": 0.5881039750410733
+    "_score": 0.5023178817784748
   },
   {
     "id": 3,
@@ -194,7 +194,7 @@ This artifact captures the in-memory scoring and reordering of the same seeded w
     "matchedTechnologies": [
       "nodejs"
     ],
-    "_score": 0.4714373083744066
+    "_score": 0.3856512151118081
   },
   {
     "id": 4,
@@ -203,7 +203,7 @@ This artifact captures the in-memory scoring and reordering of the same seeded w
     "matchedTechnologies": [
       "postgresql"
     ],
-    "_score": 0.42231658356233814
+    "_score": 0.3542281162176927
   },
   {
     "id": 5,
@@ -212,63 +212,63 @@ This artifact captures the in-memory scoring and reordering of the same seeded w
     "matchedTechnologies": [
       "nodejs"
     ],
-    "_score": 0.3833294384422792
+    "_score": 0.3292875860973829
   },
   {
     "id": 15,
     "title": "Zustand and React Hook Form Demo",
     "author": "carol_fullstack",
     "matchedTechnologies": [],
-    "_score": 0.29999221021789174
+    "_score": 0.19190850552809918
   },
   {
     "id": 1,
     "title": "React Dashboard for Analytics",
     "author": "alice_frontend",
     "matchedTechnologies": [],
-    "_score": 0.29999221021789174
+    "_score": 0.19190850552809918
   },
   {
     "id": 9,
     "title": "TypeScript Utility Library",
     "author": "carol_fullstack",
     "matchedTechnologies": [],
-    "_score": 0.2831549412292747
+    "_score": 0.18113750875310558
   },
   {
     "id": 11,
     "title": "CI Pipeline with Docker",
     "author": "erin_devops",
     "matchedTechnologies": [],
-    "_score": 0.18898325022900483
+    "_score": 0.12089478288435938
   },
   {
     "id": 12,
     "title": "React Native Learning Project",
     "author": "frank_newbie",
     "matchedTechnologies": [],
-    "_score": 0.14999610510894587
+    "_score": 0.09595425276404958
   },
   {
     "id": 13,
     "title": "Next.js Blog Platform",
     "author": "alice_frontend",
     "matchedTechnologies": [],
-    "_score": 0.11905198752053665
+    "_score": 0.07615894088923741
   },
   {
     "id": 6,
     "title": "JavaScript Weather Widget",
     "author": "frank_newbie",
     "matchedTechnologies": [],
-    "_score": 0.11905198752053665
+    "_score": 0.07615894088923741
   },
   {
     "id": 7,
     "title": "Zustand State Management Demo",
     "author": "alice_frontend",
     "matchedTechnologies": [],
-    "_score": 0.05952599376026833
+    "_score": 0.038079470444618714
   }
 ]
 ```

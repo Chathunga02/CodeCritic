@@ -1077,9 +1077,34 @@ These features are outside the current MVP unless explicitly selected by the tea
 
 ---
 
-# Project Status
+# Portfolio Layer Additions
 
-**Current Status:** Initial Repository Setup
+This project includes several advanced infrastructure and testing features built beyond the baseline class requirements to demonstrate production readiness.
+
+## Testing Suite
+CodeCritic employs a multi-tiered testing strategy:
+- **Unit & Integration Tests**: Run in CI using Vitest and Supertest against a dedicated Postgres service container.
+- **End-to-End (E2E) Tests**: Driven by Playwright to simulate full user journeys (Workflow A & B).
+  To run the E2E suite locally:
+  ```bash
+  npm run test:e2e
+  ```
+
+## Docker and Compose
+For identical local environments and disposable test databases, the repository includes:
+- **`backend/Dockerfile`**: A multi-stage build on `node:20-alpine`. The build stage compiles TypeScript and generates the Prisma client, while the runtime stage carries only production dependencies and executes as a non-root user. *(Note: This does not run in production as Render builds natively, but exists as a portfolio artifact).*
+- **`docker-compose.yml`**: Provisions exactly two services (`api` and `db`). The Postgres database includes a named volume and healthcheck, which the API service waits for before starting.
+
+## Pipeline and Continuous Deployment
+The project uses a trunk-based continuous deployment (CD) pipeline via GitHub Actions. Every push to `main` triggers linting, typechecking, and integration tests. Once the CI half turns green, a Render deploy hook is fired to automatically deploy the backend.
+
+## Cloud Usage Constraints
+- **Render Build Minutes**: Currently monitored to ensure deployments remain within the free-tier budget. If budget runs tight, the frontend can be migrated to Vercel.
+- **Instance-Hours**: Due to Render's free tier, the web service spins down after inactivity. A cold-start delay of ~1 minute is expected. Pre-warming the `/api/health` endpoint is recommended before any demonstration.
+
+---
+
+# Project Status
 
 The project is currently in the planning and setup phase.
 
