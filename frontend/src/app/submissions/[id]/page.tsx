@@ -41,10 +41,13 @@ export default function SubmissionDetailPage() {
             reviews: [
               {
                 id: review.id,
-                feedback: review.feedback,
-                createdAt: review.createdAt,
-                reviewer: { id: userId!, username: useAuthStore.getState().username ?? "you" },
-                ratings: review.ratings,
+  feedback: review.feedback,
+  strengths: review.strengths ?? "",
+  improvements: review.improvements ?? "",
+  resources: review.resources,
+  createdAt: review.createdAt,
+  reviewer: { id: userId!, username: useAuthStore.getState().username ?? "you" },
+  ratings: review.ratings,
               },
               ...prev.reviews,
             ],
