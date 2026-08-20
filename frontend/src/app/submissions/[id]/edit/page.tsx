@@ -6,12 +6,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams, useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
 import { api } from "@/services/api";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { updateSubmissionFormSchema, type UpdateSubmissionFormValues } from "@/schemas/submission.schema";
 import TechnologyMultiSelect from "@/components/submissions/TechnologyMultiSelect";
 import type { Submission, SubmissionDetail } from "@/types/submission";
 
 const inputClass =
-  "mt-1 block w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50";
+  "mt-1 block w-full border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50";
 
 export default function EditSubmissionPage() {
   const params = useParams<{ id: string }>();
@@ -51,7 +52,7 @@ export default function EditSubmissionPage() {
   if (!isLoaded || !submission) return <div className="p-8 text-sm text-zinc-500">Loading…</div>;
 
   // proxy.ts doesn't gate this route (only /submissions/new, /me, /settings
-  // are in its matcher), so ownership is a UX check here — the API's 404
+  // are in its matcher), so ownership is a UX check here, the API's 404
   // then 403 ordering (AUTH §3) is the real guard if someone reaches it anyway.
   if (!userId) {
     router.push("/sign-in");
@@ -77,6 +78,7 @@ export default function EditSubmissionPage() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
+      <Breadcrumbs items={[{ label: submission.title, href: `/submissions/${submission.id}` }, { label: "Edit" }]} />
       <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">Edit submission</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-5" noValidate>
@@ -115,13 +117,13 @@ export default function EditSubmissionPage() {
           </label>
           <p className="mt-1 text-xs text-zinc-400">
             Criteria are fixed the moment a submission is posted, so reviewers are always rating the same fixed
-            scale — they can&apos;t be added, edited, or removed here.
+            scale, they can&apos;t be added, edited, or removed here.
           </p>
           <ul className="mt-2 space-y-1">
             {submission.criteria.map((c) => (
               <li
                 key={c.id}
-                className="rounded-lg bg-zinc-50 px-3 py-2 text-sm text-zinc-500 dark:bg-zinc-900 dark:text-zinc-400"
+                className=" bg-zinc-50 px-3 py-2 text-sm text-zinc-500 dark:bg-zinc-900 dark:text-zinc-400"
               >
                 {c.label}
               </li>
@@ -130,21 +132,21 @@ export default function EditSubmissionPage() {
         </div>
 
         {apiError && (
-          <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600 dark:bg-red-950 dark:text-red-400">{apiError}</p>
+          <p className=" bg-red-50 px-3 py-2 text-sm text-red-600 dark:bg-red-950 dark:text-red-400">{apiError}</p>
         )}
 
         <div className="flex gap-3">
           <button
             type="submit"
             disabled={isSubmitting}
-            className="rounded-full bg-indigo-600 px-5 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+            className=" bg-indigo-600 px-5 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
           >
             {isSubmitting ? "Saving…" : "Save changes"}
           </button>
           <button
             type="button"
             onClick={() => router.push(`/submissions/${submissionId}`)}
-            className="rounded-full border border-zinc-300 px-5 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300"
+            className=" border border-zinc-300 px-5 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300"
           >
             Cancel
           </button>

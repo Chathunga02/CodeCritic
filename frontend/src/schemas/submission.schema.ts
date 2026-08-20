@@ -2,7 +2,7 @@ import { z } from "zod";
 
 // Thin, UX-level schemas for the submission forms (D-02, D-22).
 // Intentionally looser than backend/src/models/submission.model.ts and
-// never stricter in ways that could block valid input — the backend is
+// never stricter in ways that could block valid input, the backend is
 // the authority, this is just fast client-side feedback.
 // Never import across the frontend/backend boundary (V-19); this is a
 // deliberate duplication, not a shared module.
@@ -33,7 +33,7 @@ export const createSubmissionFormSchema = z.object({
 
 export type CreateSubmissionFormValues = z.infer<typeof createSubmissionFormSchema>;
 
-// /submissions/[id]/edit (B-13) — no criteria field at all, criteria are
+// /submissions/[id]/edit (B-13), no criteria field at all, criteria are
 // locked forever once the submission is created (D-03).
 export const updateSubmissionFormSchema = z.object(submissionSharedFields);
 

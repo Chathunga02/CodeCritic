@@ -6,12 +6,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
 import { api } from "@/services/api";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { createSubmissionFormSchema, type CreateSubmissionFormValues } from "@/schemas/submission.schema";
 import TechnologyMultiSelect from "@/components/submissions/TechnologyMultiSelect";
 import type { Submission } from "@/types/submission";
 
 const inputClass =
-  "mt-1 block w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50";
+  "mt-1 block w-full border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50";
 
 export default function NewSubmissionPage() {
   const router = useRouter();
@@ -36,7 +37,7 @@ export default function NewSubmissionPage() {
 
   const { fields, append, remove } = useFieldArray({ control, name: "criteria" });
 
-  // Auth gating is UX only — proxy.ts already protects this route (AUTH §5),
+  // Auth gating is UX only, proxy.ts already protects this route (AUTH §5),
   // the API enforces requireAuth again regardless.
   if (!isLoaded) return <div className="p-8 text-sm text-zinc-500">Loading…</div>;
   if (!userId) {
@@ -56,9 +57,10 @@ export default function NewSubmissionPage() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
+      <Breadcrumbs items={[{ label: "New Submission" }]} />
       <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">Post a review request</h1>
       <p className="mt-1 text-sm text-zinc-500">
-        Share your repo and the criteria you want feedback on. Criteria are locked once you post — you won&apos;t be
+        Share your repo and the criteria you want feedback on. Criteria are locked once you post, you won&apos;t be
         able to add, edit, or remove them later.
       </p>
 
@@ -100,7 +102,7 @@ export default function NewSubmissionPage() {
         <div>
           <div className="flex items-center justify-between">
             <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
-              Review criteria <span className="text-zinc-400">(1–5, locked after posting)</span>
+              Review criteria <span className="text-zinc-400">(1 to 5, locked after posting)</span>
             </label>
             <button
               type="button"
@@ -141,21 +143,21 @@ export default function NewSubmissionPage() {
         </div>
 
         {apiError && (
-          <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600 dark:bg-red-950 dark:text-red-400">{apiError}</p>
+          <p className=" bg-red-50 px-3 py-2 text-sm text-red-600 dark:bg-red-950 dark:text-red-400">{apiError}</p>
         )}
 
         <div className="flex gap-3">
           <button
             type="submit"
             disabled={isSubmitting}
-            className="rounded-full bg-indigo-600 px-5 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+            className=" bg-indigo-600 px-5 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
           >
             {isSubmitting ? "Posting…" : "Post request"}
           </button>
           <button
             type="button"
             onClick={() => router.push("/")}
-            className="rounded-full border border-zinc-300 px-5 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300"
+            className=" border border-zinc-300 px-5 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300"
           >
             Cancel
           </button>

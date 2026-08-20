@@ -14,3 +14,10 @@ export interface FeedSubmission {
   matchedTechnologies?: string[];
   _score?: number;
 }
+
+export interface TrendingReviewedSubmission {
+  id: number;
+  title: string;
+  createdAt: string;
+  reviewCount: number;
+}

@@ -1,5 +1,9 @@
 import { z } from "zod";
 
+// Thin, UX-level schema for the review form (D-02, D-22). Mirrors
+// backend/src/models/review.model.ts but stays advisory only, the API
+// re-enforces everything (self-review, criteria mismatch, duplicates).
+
 export const reviewFormSchema = z.object({
   feedback: z.string().trim().min(10, "Feedback must be at least 10 characters").max(2000, "Max 2000 characters"),
   strengths: z.string().trim().min(5, "Describe at least one strength").max(1000, "Max 1000 characters"),

@@ -11,7 +11,7 @@ export const userProfileSchema = z.object({
   createdAt: z.string(),
 });
 
-// PATCH /users/me — local fields only.
+// PATCH /users/me, local fields only.
 // Identity fields (id, clerkId, karma, createdAt, updatedAt) are absent
 // entirely from this schema, not just optional (V-11).
 // .strict() rejects any key not listed here (D-11).

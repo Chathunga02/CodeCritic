@@ -2,6 +2,7 @@ import submissionRepository from "../repository/submission.repository.js";
 import type { CreateSubmissionBody, UpdateSubmissionBody } from "../models/submission.model.js";
 import { NotFoundError } from "../errors/NotFoundError.js";
 import { ForbiddenError } from "../errors/ForbiddenError.js";
+import { TRENDING_REVIEWED_CANDIDATE_WINDOW, TRENDING_REVIEWED_DISPLAY_LIMIT } from "../config/constants.js";
 
 class SubmissionService {
   create(authorId: number, input: CreateSubmissionBody) {
@@ -51,6 +52,18 @@ class SubmissionService {
       githubUrl: input.githubUrl,
       technologies,
     });
+  }
+
+  async getTrendingReviewed(userId: number) {
+    const candidates = await submissionRepository.findReviewedByUserRankedByReviewCount(
+      userId,
+      TRENDING_REVIEWED_CANDIDATE_WINDOW,
+    );
+
+    return candidates
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+      .slice(0, TRENDING_REVIEWED_DISPLAY_LIMIT)
+      .map(({ _count, ...rest }) => ({ ...rest, reviewCount: _count.reviews }));
   }
 }
 

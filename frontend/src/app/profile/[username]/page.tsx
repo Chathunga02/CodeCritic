@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { api } from "@/services/api";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 interface Technology { id: number; name: string; }
 interface PublicProfile {
@@ -29,13 +30,14 @@ export default function ProfilePage() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
+      <Breadcrumbs items={[{ label: `@${profile.username}` }]} />
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">{profile.username}</h1>
           {profile.bio && <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{profile.bio}</p>}
           {profile.githubUrl && (
             <a href={profile.githubUrl} target="_blank" rel="noopener noreferrer"
-              className="mt-1 block text-xs text-indigo-600 hover:underline">
+              className="mt-1 block text-xs text-indigo-600 hover:text-indigo-800 dark:hover:text-indigo-400">
               {profile.githubUrl}
             </a>
           )}
@@ -48,7 +50,7 @@ export default function ProfilePage() {
       {profile.technologies.length > 0 && (
         <div className="mt-4 flex flex-wrap gap-2">
           {profile.technologies.map((t) => (
-            <span key={t.id} className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+            <span key={t.id} className=" bg-zinc-100 px-2.5 py-0.5 text-xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
               {t.name}
             </span>
           ))}

@@ -35,6 +35,15 @@ class SubmissionController {
       data: submission,
     });
   });
+
+  getTrendingReviewed = catchAsync(async (req: Request, res: Response) => {
+    const trending = await submissionService.getTrendingReviewed(req.user!.id);
+
+    res.json({
+      success: true,
+      data: trending,
+    });
+  });
 }
 
 export default new SubmissionController();

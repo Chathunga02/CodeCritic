@@ -10,3 +10,6 @@ export const FEED_RECENCY_WEIGHT = 0.3;
 export const FEED_HALF_LIFE_HOURS = 72;
 export const FEED_WINDOW = 200;
 export const KARMA_PER_REVIEW = 2;
+
+export const TRENDING_REVIEWED_CANDIDATE_WINDOW = 15;
+export const TRENDING_REVIEWED_DISPLAY_LIMIT = 3;

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuthStore } from "@/store/authStore";
 import { api } from "@/services/api";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 interface Review {
   id: number; feedback: string; createdAt: string;
@@ -27,11 +28,12 @@ export default function ReviewsReceivedPage() {
   }, [isLoaded, userId, page]);
 
   if (!isLoaded) return <div className="p-8 text-sm text-zinc-500">Loading…</div>;
-  if (!userId) return <div className="p-8 text-sm text-zinc-500"><Link href="/sign-in" className="text-indigo-600 underline">Sign in</Link> to view your reviews.</div>;
+  if (!userId) return <div className="p-8 text-sm text-zinc-500"><Link href="/sign-in" className="font-medium text-indigo-600 hover:text-indigo-800 dark:hover:text-indigo-400">Sign in</Link> to view your reviews.</div>;
   if (error) return <div className="p-8 text-sm text-red-500">{error}</div>;
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
+      <Breadcrumbs items={[{ label: "My Profile", href: "/me" }, { label: "Reviews Received" }]} />
       <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">Reviews received</h1>
 
       {reviews.length === 0 ? (
@@ -44,11 +46,11 @@ export default function ReviewsReceivedPage() {
                 <div>
                   <p className="text-xs text-zinc-500">
                     On{" "}
-                    <Link href={`/submissions/${r.submission.id}`} className="text-indigo-600 hover:underline">
+                    <Link href={`/submissions/${r.submission.id}`} className="text-indigo-600 hover:text-indigo-800 dark:hover:text-indigo-400">
                       {r.submission.title}
                     </Link>
                     {" "}by{" "}
-                    <Link href={`/profile/${r.reviewer.username}`} className="text-indigo-600 hover:underline">
+                    <Link href={`/profile/${r.reviewer.username}`} className="text-indigo-600 hover:text-indigo-800 dark:hover:text-indigo-400">
                       {r.reviewer.username}
                     </Link>
                   </p>
@@ -64,10 +66,10 @@ export default function ReviewsReceivedPage() {
       {meta && meta.totalPages > 1 && (
         <div className="mt-6 flex gap-3">
           <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}
-            className="rounded-full border border-zinc-300 px-4 py-1.5 text-sm disabled:opacity-40 dark:border-zinc-700">Previous</button>
+            className=" border border-zinc-300 px-4 py-1.5 text-sm disabled:opacity-40 dark:border-zinc-700">Previous</button>
           <span className="py-1.5 text-sm text-zinc-500">{page} / {meta.totalPages}</span>
           <button onClick={() => setPage((p) => Math.min(meta.totalPages, p + 1))} disabled={page === meta.totalPages}
-            className="rounded-full border border-zinc-300 px-4 py-1.5 text-sm disabled:opacity-40 dark:border-zinc-700">Next</button>
+            className=" border border-zinc-300 px-4 py-1.5 text-sm disabled:opacity-40 dark:border-zinc-700">Next</button>
         </div>
       )}
     </div>
